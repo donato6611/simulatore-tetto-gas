@@ -1,6 +1,6 @@
 // Per pubblicare un aggiornamento aumenta il numero di versione qui sotto (per esempio da v2 a v3):
 // i telefoni scaricheranno la nuova versione alla prossima apertura con connessione.
-const CACHE = 'simulatore-tetto-v8';
+const CACHE = 'simulatore-tetto-v9';
 const ASSETS = [
   "./",
   "./index.html",

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tetto al gas, in breve</title>
+<meta name="description" content="Simulatore didattico interattivo: cosa succede al prezzo dell’elettricità, con e senza tetto al gas, se un gruppo trattiene capacità. Valori inventati.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Tetto al gas: chi fissa il prezzo?">
+<meta property="og:description" content="Simulatore didattico interattivo: cosa succede al prezzo dell’elettricità, con e senza tetto al gas, se un gruppo trattiene capacità. Valori inventati.">
+<meta property="og:url" content="https://donato6611.github.io/simulatore-tetto-gas/breve.html">
+<meta property="og:image" content="https://donato6611.github.io/simulatore-tetto-gas/anteprima.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#EEF1F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F161D" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/barlow-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/barlow-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/barlow-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/barlow-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Semi Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/barlow-semi-condensed-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Semi Condensed'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/barlow-semi-condensed-latin-800-normal.woff2') format('woff2'); }
+:root {
+  --ground: #EEF1F3;
+  --surface: #FFFFFF;
+  --ink: #14202B;
+  --muted: #4B5966;
+  --line: #C9D1D8;
+  --gas-a: #E07020;
+  --water-a: #1F6FB2;
+  --gas-o: #7D8A97;
+  --other: #C3CCD4;
+  --alert: #A6470C;
+  --focus: #1F6FB2;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0F161D;
+    --surface: #17212B;
+    --ink: #E6EBEF;
+    --muted: #A2AFBB;
+    --line: #2C3946;
+    --gas-a: #F28C3E;
+    --water-a: #4F9DE2;
+    --gas-o: #6E7B89;
+    --other: #3A4653;
+    --alert: #F2A15F;
+    --focus: #7DB6EC;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0F161D;
+  --surface: #17212B;
+  --ink: #E6EBEF;
+  --muted: #A2AFBB;
+  --line: #2C3946;
+  --gas-a: #F28C3E;
+  --water-a: #4F9DE2;
+  --gas-o: #6E7B89;
+  --other: #3A4653;
+  --alert: #F2A15F;
+  --focus: #7DB6EC;
+  color-scheme: dark;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 560px; margin: 0 auto; padding: 18px 16px 28px; }
+h1 {
+  font-family: 'Barlow Semi Condensed', 'Barlow', 'Arial Narrow', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 7vw, 40px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+.lead { margin: 0; color: var(--muted); }
+.toggles { display: grid; grid-template-columns: 5.4rem minmax(0, 1fr); gap: 10px 12px; align-items: center; margin-top: 16px; }
+.toggles .lbl { font-weight: 600; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.seg button {
+  font: inherit;
+  font-weight: 600;
+  padding: 8px 6px;
+  min-height: 44px;
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  cursor: pointer;
+}
+.seg button + button { border-left: 1.5px solid var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.readout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6px 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+}
+.price {
+  font-family: 'Barlow Semi Condensed', 'Barlow', 'Arial Narrow', sans-serif;
+  font-weight: 800;
+  font-size: clamp(38px, 10vw, 52px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.price .unit { font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 17px; color: var(--muted); margin-left: 4px; }
+.setter { margin: 6px 0 0; font-weight: 600; line-height: 1.3; }
+.dot { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 7px; }
+.flag {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  white-space: nowrap;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.flag.off { color: var(--alert); }
+#chart { width: 100%; margin-top: 8px; }
+#chart svg { display: block; width: 100%; height: auto; }
+.gridline { stroke: var(--line); stroke-width: 1; }
+.tick { fill: var(--muted); font-size: 11px; font-family: 'Barlow', sans-serif; }
+.lab { fill: var(--ink); font-size: 12px; font-weight: 600; font-family: 'Barlow', sans-serif; }
+.lab.strong { font-weight: 700; font-size: 13px; }
+.halo { paint-order: stroke; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round; }
+.demand { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.priceline { stroke: var(--ink); stroke-width: 2; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+.sw.ghost { border: 1.5px dashed var(--gas-a); }
+.figs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.figs div { min-width: 0; }
+.figs .k { font-size: 14px; font-weight: 600; color: var(--muted); }
+.figs .v {
+  font-family: 'Barlow Semi Condensed', 'Barlow', 'Arial Narrow', sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 6.5vw, 30px);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.figs .d { font-size: 13px; color: var(--muted); }
+.figs .d.up { color: var(--alert); font-weight: 600; }
+.take { margin: 14px 0 0; font-size: 17px; font-weight: 500; line-height: 1.45; }
+.foot { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
+.foot a { color: var(--ink); font-weight: 600; }
+.disclaimer { margin: 8px 0 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+.calc { margin-top: 12px; font-size: 14px; color: var(--muted); }
+.calc summary { cursor: pointer; font-weight: 600; color: var(--ink); padding: 4px 0; }
+.calc summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.calc p { margin: 6px 0 0; }
+.calc .live { color: var(--ink); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tetto al gas: chi fissa il prezzo?</h1>
+  <p class="lead">Un’ora di mercato elettrico. Il Gruppo A ha centrali a gas e pompaggi.</p>
+  <p class="disclaimer">Tutti i valori sono inventati e servono solo a scopo didattico.</p>
+
+  <div class="toggles">
+    <span class="lbl" id="l-tope">Tetto</span>
+    <div class="seg" role="group" aria-labelledby="l-tope">
+      <button type="button" data-k="tope" data-v="off">Spento</button>
+      <button type="button" data-k="tope" data-v="on">Acceso</button>
+    </div>
+    <span class="lbl" id="l-trick">Gruppo A</span>
+    <div class="seg" role="group" aria-labelledby="l-trick">
+      <button type="button" data-k="trick" data-v="off">Corretto</button>
+      <button type="button" data-k="trick" data-v="on">Trattiene</button>
+    </div>
+    <span class="lbl" id="l-hour">Ora</span>
+    <div class="seg" role="group" aria-labelledby="l-hour">
+      <button type="button" data-k="hour" data-v="sera">Sera di punta</button>
+      <button type="button" data-k="hour" data-v="sole">Pomeriggio</button>
+    </div>
+  </div>
+
+  <div class="readout" aria-live="polite">
+    <div>
+      <div class="price"><span id="price">0</span><span class="unit">€/MWh</span></div>
+      <p class="setter" id="setter"></p>
+    </div>
+    <span class="flag" id="gasflag"></span>
+  </div>
+  <div id="chart"></div>
+  <div class="legend" aria-label="Legenda del grafico">
+    <span><i class="sw" style="background: var(--gas-a)"></i>Gas del Gruppo A</span>
+    <span><i class="sw" style="background: var(--water-a)"></i>Pompaggi del Gruppo A</span>
+    <span><i class="sw" style="background: var(--gas-o)"></i>Altro gas</span>
+    <span><i class="sw" style="background: var(--other)"></i>Altri impianti</span>
+    <span><i class="sw ghost"></i>Ferme</span>
+  </div>
+
+  <div class="figs">
+    <div>
+      <div class="k">Pagano i consumatori</div>
+      <div class="v" id="cons"></div>
+      <div class="d" id="cons-d"></div>
+    </div>
+    <div>
+      <div class="k">Guadagna il Gruppo A</div>
+      <div class="v" id="grp"></div>
+      <div class="d" id="grp-d"></div>
+    </div>
+  </div>
+
+  <details class="calc">
+    <summary>Come calcolo il costo per i consumatori</summary>
+    <p>Costo = prezzo dell’ora × energia consumata nell’ora + rimborso alle centrali a gas.</p>
+    <p>Il rimborso c’è solo con il tetto attivo: per ogni MWh prodotto con il gas vale (prezzo del gas − 60) ÷ rendimento della centrale. Ipotesi semplificative: tutti pagano il prezzo dell’ora, il rimborso è a carico di tutti i consumatori e restano fuori reti, oneri e imposte.</p>
+    <p class="live" id="calc-live"></p>
+  </details>
+
+  <p class="take" id="take"></p>
+
+  <p class="foot">Modello didattico con valori inventati: una zona, un’ora, gas a 80 €/MWh e tetto a 60. «Trattiene» vuol dire 3 GW di centrali a gas dichiarate ferme e pompaggi offerti al livello di prima del tetto. Il rimborso vale su tutto il gas bruciato, come nelle regole proposte da ARERA. Il Gruppo A è immaginario.</p>
+  <p class="foot"><a href="./">Apri la versione completa, con tutti i comandi</a></p>
+</div>
+
+<script>
+(function () {
+  var CAP = 60, OTHER = 32, PUMP_COST = 100, YMAX = 350, GAS = 80, WITHHELD = 3;
+  var HOURS = { sera: { demand: 36, res: 2 }, sole: { demand: 34, res: 16 } };
+  var WHO = {
+    res: 'lo fissano solare ed eolico',
+    ror: 'lo fissa l’idroelettrico ad acqua fluente',
+    imp: 'lo fissa l’import dai paesi vicini',
+    g1: 'lo fissano centrali a gas di altri operatori',
+    gA: 'lo fissano le centrali a gas del Gruppo A',
+    g2: 'lo fissano centrali a gas di altri operatori',
+    pA: 'lo fissano i pompaggi del Gruppo A',
+    bat: 'lo fissano batterie e impianti di punta',
+    oil: 'lo fissa la riserva a olio'
+  };
+  var NAMES = {
+    res: 'Solare ed eolico', ror: 'Idroelettrico ad acqua fluente', imp: 'Import dai paesi vicini',
+    g1: 'Centrali a gas efficienti, altri operatori', gA: 'Centrali a gas del Gruppo A',
+    g2: 'Centrali a gas meno efficienti, altri operatori', pA: 'Pompaggi del Gruppo A',
+    bat: 'Batterie e impianti di punta', oil: 'Riserva a olio'
+  };
+  var COLORS = { gasA: 'var(--gas-a)', waterA: 'var(--water-a)', gasO: 'var(--gas-o)', other: 'var(--other)' };
+
+  var ui = { tope: true, trick: false, hour: 'sera' };
+
+  function sim(u, extra) {
+    var s = { tope: u.tope, hour: u.hour, gas: GAS, withheld: u.trick ? WITHHELD : 0, pumpMode: u.trick ? 'pre' : 'correct' };
+    for (var k in extra) s[k] = extra[k];
+    return s;
+  }
+  function topeActive(s) { return s.tope && s.gas > CAP; }
+  function bidGas(s) { return topeActive(s) ? CAP : s.gas; }
+  function gasCost(g, eta) { return g / eta + OTHER; }
+  function pumpBid(s) {
+    return s.pumpMode === 'pre' ? Math.round(gasCost(s.gas, 0.50)) : Math.round(gasCost(bidGas(s), 0.50) - 5);
+  }
+  function units(s) {
+    var g = bidGas(s), h = HOURS[s.hour];
+    return [
+      { id: 'res', kind: 'other', cap: h.res, offer: 0 },
+      { id: 'ror', kind: 'other', cap: 3, offer: 5 },
+      { id: 'imp', kind: 'other', cap: 7, offer: 145 },
+      { id: 'g1', kind: 'gasO', cap: 10, eta: 0.57, offer: gasCost(g, 0.57) },
+      { id: 'gA', kind: 'gasA', cap: 6 - s.withheld, eta: 0.55, offer: gasCost(g, 0.55) },
+      { id: 'g2', kind: 'gasO', cap: 8, eta: 0.50, offer: gasCost(g, 0.50) },
+      { id: 'pA', kind: 'waterA', cap: 3, offer: pumpBid(s) },
+      { id: 'bat', kind: 'other', cap: 2, offer: 230 },
+      { id: 'oil', kind: 'other', cap: 1.5, offer: 300 }
+    ];
+  }
+  function solve(s) {
+    var D = HOURS[s.hour].demand;
+    var list = units(s).map(function (u, i) { u.i = i; return u; }).filter(function (u) { return u.cap > 0; });
+    list.sort(function (a, b) { return (a.offer - b.offer) || (a.i - b.i); });
+    var cum = 0, marg = null;
+    list.forEach(function (u) {
+      u.x0 = cum;
+      u.q = Math.max(0, Math.min(u.cap, D - cum));
+      cum += u.cap;
+      u.x1 = cum;
+      if (!marg && cum >= D - 1e-9) marg = u;
+    });
+    if (!marg) marg = list[list.length - 1];
+    var price = marg.offer, active = topeActive(s), reimb = 0, group = 0;
+    list.forEach(function (u) {
+      if (u.eta) {
+        var r = active ? (s.gas - CAP) / u.eta : 0;
+        reimb += u.q * 1000 * r;
+        if (u.id === 'gA') group += u.q * 1000 * (price - gasCost(s.gas, u.eta) + r);
+      }
+      if (u.id === 'pA') group += u.q * 1000 * (price - PUMP_COST);
+    });
+    return { list: list, marg: marg, price: price, D: D, reimb: reimb, consumers: D * 1000 * price + reimb,
+      group: group, active: active, totalCap: cum, withheld: s.withheld, gAoffer: gasCost(bidGas(s), 0.55) };
+  }
+
+  function $(sel) { return document.querySelector(sel); }
+  function fmt0(v) { return Math.round(v).toLocaleString('it-IT'); }
+  function fmtGW(v) { return v.toLocaleString('it-IT', { maximumFractionDigits: 1 }) + ' GW'; }
+  function fmtM(v) {
+    var x = Math.round(v / 1e4) / 100;
+    if (x === 0) x = 0;
+    return x.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' mln €';
+  }
+  function signed(v) { return (v >= 0 ? '+' : '\u2212') + fmtM(Math.abs(v)); }
+
+  function drawChart(r) {
+    var host = $('#chart');
+    var W = Math.max(280, Math.round(host.clientWidth || 340));
+    var H = Math.round(Math.min(250, Math.max(170, W * 0.5)));
+    var m = { l: 34, r: 8, t: 18, b: 24 };
+    var xMax = Math.ceil((r.totalCap + r.withheld) / 5) * 5;
+    function X(v) { return m.l + (v / xMax) * (W - m.l - m.r); }
+    function Y(v) { return H - m.b - (Math.min(v, YMAX) / YMAX) * (H - m.t - m.b); }
+    var s = '<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="var(--gas-a)" stroke-width="2"></line></pattern></defs>';
+    [0, 100, 200, 300].forEach(function (t) {
+      s += '<line class="gridline" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"></line>';
+      s += '<text class="tick" x="' + (m.l - 6) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + t + '</text>';
+    });
+    s += '<text class="tick" x="' + m.l + '" y="' + (m.t - 7) + '">€/MWh</text>';
+    for (var t = 0; t <= xMax - 8; t += 10) {
+      s += '<text class="tick" x="' + X(t) + '" y="' + (H - 7) + '" text-anchor="middle">' + t + '</text>';
+    }
+    s += '<text class="tick" x="' + (W - m.r) + '" y="' + (H - 7) + '" text-anchor="end">' + xMax + ' GW</text>';
+    r.list.forEach(function (u) {
+      var x = X(u.x0) + 0.5, w = Math.max(1, X(u.x1) - X(u.x0) - 1);
+      var y = Math.min(Y(u.offer), Y(0) - 3), h = Y(0) - y;
+      s += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="1.5" fill="' + COLORS[u.kind] + '" fill-opacity="' + (u.q > 0 ? 1 : 0.32) + '"' +
+        (u === r.marg ? ' stroke="var(--ink)" stroke-width="2"' : '') + '><title>' + NAMES[u.id] + ': ' + fmt0(u.offer) + ' €/MWh, ' + fmtGW(u.cap) + '</title></rect>';
+    });
+    if (r.withheld > 0) {
+      var gx0 = X(r.totalCap) + 1, gx1 = X(r.totalCap + r.withheld) - 1, gy = Y(r.gAoffer);
+      s += '<rect x="' + gx0 + '" y="' + gy + '" width="' + Math.max(1, gx1 - gx0) + '" height="' + (Y(0) - gy) + '" fill="url(#hatch)" fill-opacity="0.55" stroke="var(--gas-a)" stroke-width="1.5" stroke-dasharray="4 3"></rect>';
+      s += '<text class="lab halo" x="' + ((gx0 + gx1) / 2) + '" y="' + (gy - 6) + '" text-anchor="middle">ferme</text>';
+    }
+    var xd = X(r.D), yp = Y(r.price);
+    s += '<line class="demand" x1="' + xd + '" x2="' + xd + '" y1="' + m.t + '" y2="' + Y(0) + '"></line>';
+    s += '<text class="lab halo" x="' + (xd - 5) + '" y="' + (m.t + 10) + '" text-anchor="end">domanda</text>';
+    s += '<line class="priceline" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + yp + '" y2="' + yp + '"></line>';
+    s += '<text class="lab strong halo" x="' + (m.l + 5) + '" y="' + (yp - 6) + '">prezzo ' + fmt0(r.price) + '</text>';
+    var aria = 'curva di offerta dell’ora, prezzo ' + fmt0(r.price) + ' euro per megawattora, ' + WHO[r.marg.id];
+    host.innerHTML = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + aria + '">' + s + '</svg>';
+  }
+
+  function render() {
+    var s = sim(ui, {});
+    var r = solve(s);
+    var corr = solve(sim(ui, { withheld: 0, pumpMode: 'correct' }));
+    var noT = solve(sim(ui, { tope: false, withheld: 0, pumpMode: 'correct' }));
+
+    document.querySelectorAll('[data-k]').forEach(function (b) {
+      var k = b.dataset.k, v = b.dataset.v;
+      var on = k === 'hour' ? ui.hour === v : (ui[k] === (v === 'on'));
+      b.setAttribute('aria-pressed', String(on));
+    });
+
+    $('#price').textContent = fmt0(r.price);
+    $('#setter').innerHTML = '<span class="dot" style="background:' + COLORS[r.marg.kind] + '"></span>' + WHO[r.marg.id];
+    var gasSets = !!r.marg.eta, flag = $('#gasflag');
+    flag.textContent = gasSets ? 'Prezzo fissato dal gas' : 'Prezzo non fissato dal gas';
+    flag.className = 'flag' + (gasSets ? '' : ' off');
+
+    drawChart(r);
+
+    $('#cons').textContent = fmtM(r.consumers);
+    var dc = r.consumers - noT.consumers, cd = $('#cons-d');
+    cd.textContent = Math.abs(dc) < 5000 ? 'come senza tetto' : signed(dc) + ' rispetto a senza tetto';
+    cd.className = 'd' + (dc >= 5000 ? ' up' : '');
+    var energy = r.consumers - r.reimb;
+    $('#calc-live').textContent = 'In questo scenario: ' + fmt0(r.price) + ' €/MWh × ' + fmt0(r.D * 1000) + ' MWh = ' + fmtM(energy) +
+      (r.active ? ', più rimborso ' + fmtM(r.reimb) + ' = ' + fmtM(r.consumers) + '.' : ', senza rimborso perché il tetto non è attivo.');
+    $('#grp').textContent = fmtM(r.group);
+    var dg = r.group - corr.group, gd = $('#grp-d');
+    gd.textContent = Math.abs(dg) < 5000 ? 'come con offerte corrette' : signed(dg) + ' rispetto a offerte corrette';
+    gd.className = 'd' + (dg >= 5000 ? ' up' : '');
+
+    var t;
+    if (!ui.trick) {
+      if (r.active && gasSets) {
+        t = 'Il gas fa il prezzo e il tetto lo abbassa da ' + fmt0(noT.price) + ' a ' + fmt0(r.price) + ' €/MWh: in quest’ora i consumatori risparmiano ' + fmtM(noT.consumers - r.consumers) + ', rimborso compreso.';
+      } else if (r.active) {
+        t = 'Con il tetto il prezzo passa da ' + fmt0(noT.price) + ' a ' + fmt0(r.price) + ' €/MWh.';
+      } else {
+        t = 'Senza tetto il prezzo lo fa il gas al suo costo reale: ' + fmt0(r.price) + ' €/MWh.';
+      }
+    } else {
+      var dp = r.price - corr.price;
+      if (dp < 1) {
+        t = 'Il trucco non sposta il prezzo: centrali a gas di altri operatori prendono il posto di quelle ferme' +
+          (r.group < corr.group - 5000 ? ', e il Gruppo A guadagna meno che offrendo correttamente.' : '.');
+      } else {
+        t = 'Il Gruppo A ferma ' + fmtGW(WITHHELD) + ' di gas e alza i pompaggi: il prezzo sale da ' + fmt0(corr.price) + ' a ' + fmt0(r.price) + ' €/MWh.';
+        if (r.active) {
+          t += r.consumers > noT.consumers
+            ? ' Con il rimborso, i consumatori pagano più che senza tetto.'
+            : ' I consumatori pagano comunque meno che senza tetto: qui il trucco rende poco.';
+          t += ' Il controllo del tetto non lo vede: guarda i prezzi, non le quantità.';
+        }
+      }
+    }
+    $('#take').textContent = t;
+  }
+
+  document.querySelectorAll('[data-k]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.dataset.k, v = b.dataset.v;
+      if (k === 'hour') ui.hour = v; else ui[k] = v === 'on';
+      render();
+    });
+  });
+
+  var lastW = 0;
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () {
+      var w = $('#chart').clientWidth;
+      if (Math.abs(w - lastW) > 2) { lastW = w; drawChart(solve(sim(ui, {}))); }
+    }).observe($('#chart'));
+  } else {
+    window.addEventListener('resize', function () { drawChart(solve(sim(ui, {}))); });
+  }
+  render();
+})();
+</script>
+</body>
+</html>

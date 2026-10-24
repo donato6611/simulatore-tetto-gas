@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tetto al gas e capacità trattenuta</title>
 <meta name="description" content="Simulatore didattico del mercato elettrico: cosa succede con e senza tetto al gas se un gruppo trattiene capacità. Valori inventati.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Tetto al gas e capacità trattenuta: il simulatore">
+<meta property="og:description" content="Simulatore didattico interattivo: cosa succede al prezzo dell’elettricità, con e senza tetto al gas, se un gruppo trattiene capacità. Valori inventati.">
+<meta property="og:url" content="https://donato6611.github.io/simulatore-tetto-gas/">
+<meta property="og:image" content="https://donato6611.github.io/simulatore-tetto-gas/anteprima.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#EEF1F3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F161D" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
@@ -474,7 +483,7 @@ footer p { margin: 0 0 6px; }
   };
   var COLORS = { gasA: 'var(--gas-a)', waterA: 'var(--water-a)', gasO: 'var(--gas-o)', other: 'var(--other)' };
 
-  var state = { tope: true, hour: 'sera', demand: 36, gas: 80, withheld: 0, gasMode: 'cost', gasOffer: 136, pumpMode: 'correct', pump: 147 };
+  var state = { tope: false, hour: 'sera', demand: 36, gas: 80, withheld: 0, gasMode: 'cost', gasOffer: 170, pumpMode: 'correct', pump: 170 };
 
   function topeActive(s) { return s.tope && s.gas > CAP; }
   function bidGas(s) { return topeActive(s) ? CAP : s.gas; }

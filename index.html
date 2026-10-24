@@ -168,6 +168,9 @@ header p { margin: 0; color: var(--muted); max-width: 62ch; }
 .halo { paint-order: stroke; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round; }
 .demand { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .priceline { stroke: var(--ink); stroke-width: 2; }
+.dim { stroke: var(--muted); stroke-width: 1; }
+.dim.ghost { stroke: var(--gas-a); stroke-dasharray: 3 2; }
+.dimlab { fill: var(--muted); font-size: 10.5px; font-weight: 600; font-family: 'Barlow', sans-serif; font-variant-numeric: tabular-nums; }
 
 .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--muted); margin-top: -6px; }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -289,7 +292,7 @@ footer p { margin: 0 0 6px; }
       <span><i class="sw" style="background: var(--gas-o)"></i>Altre centrali a gas</span>
       <span><i class="sw" style="background: var(--other)"></i>Altri impianti</span>
       <span><i class="sw ghost"></i>Capacità ferma</span>
-      <p>Ogni blocco è un gruppo di impianti: larghezza la capacità, altezza il prezzo offerto. I blocchi chiari restano fuori perché la domanda è già coperta; quello con il bordo scuro fissa il prezzo.</p>
+      <p>Ogni blocco è un gruppo di impianti: larghezza la capacità, altezza il prezzo offerto; le quote sotto il grafico ne indicano la capacità in MW. I blocchi chiari restano fuori perché la domanda è già coperta; quello con il bordo scuro fissa il prezzo.</p>
     </div>
 
     <section class="controls" aria-label="Comandi del simulatore">
@@ -380,13 +383,13 @@ footer p { margin: 0 0 6px; }
 
   <footer>
     <p>Modello didattico con valori inventati: una sola zona, un’ora, numeri tondi. Tutti offrono ai propri costi tranne il Gruppo A, che è immaginario e non rappresenta operatori reali.</p>
-    <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza su tutto il gas bruciato, come nelle regole proposte da ARERA nel documento di consultazione 222/2026. CO<sub>2</sub> e altri costi variabili: 32 €/MWh. Energia usata dai pompaggi: 100 €/MWh.</p>
+    <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza su tutto il gas bruciato, come nelle regole proposte da ARERA nel documento di consultazione 222/2026. CO<sub>2</sub> e altri costi variabili: 32,5 €/MWh. Rendimento delle centrali a gas: dal 56% al 60%. Energia usata dai pompaggi: 100 €/MWh.</p>
   </footer>
 </div>
 
 <script>
 (function () {
-  var CAP = 60, OTHER = 32, PUMP_COST = 100, YMAX = 350;
+  var CAP = 60, OTHER = 32.5, PUMP_COST = 100, YMAX = 350;
   var HOURS = { sera: { demand: 36, res: 2 }, sole: { demand: 34, res: 16 } };
   var WHO = {
     res: 'lo fissano solare ed eolico',
@@ -412,8 +415,8 @@ footer p { margin: 0 0 6px; }
   function topeActive(s) { return s.tope && s.gas > CAP; }
   function bidGas(s) { return topeActive(s) ? CAP : s.gas; }
   function gasCost(g, eta) { return g / eta + OTHER; }
-  function correctWater(s) { return Math.round(gasCost(bidGas(s), 0.50) - 5); }
-  function preLevel(s) { return Math.round(gasCost(s.gas, 0.50)); }
+  function correctWater(s) { return Math.round(gasCost(bidGas(s), 0.56) - 5); }
+  function preLevel(s) { return Math.round(gasCost(s.gas, 0.56)); }
   function pumpBid(s) {
     if (s.pumpMode === 'correct') return correctWater(s);
     if (s.pumpMode === 'pre') return Math.min(300, preLevel(s));
@@ -426,10 +429,10 @@ footer p { margin: 0 0 6px; }
     return [
       { id: 'res', kind: 'other', cap: h.res, offer: 0 },
       { id: 'ror', kind: 'other', cap: 3, offer: 5 },
-      { id: 'imp', kind: 'other', cap: 7, offer: 145 },
-      { id: 'g1', kind: 'gasO', cap: 10, eta: 0.57, offer: gasCost(g, 0.57) },
-      { id: 'gA', kind: 'gasA', cap: 6 - s.withheld, eta: 0.55, offer: gasCost(g, 0.55) + s.markup },
-      { id: 'g2', kind: 'gasO', cap: 8, eta: 0.50, offer: gasCost(g, 0.50) },
+      { id: 'imp', kind: 'other', cap: 7, offer: 130 },
+      { id: 'g1', kind: 'gasO', cap: 10, eta: 0.60, offer: gasCost(g, 0.60) },
+      { id: 'gA', kind: 'gasA', cap: 6 - s.withheld, eta: 0.58, offer: gasCost(g, 0.58) + s.markup },
+      { id: 'g2', kind: 'gasO', cap: 8, eta: 0.56, offer: gasCost(g, 0.56) },
       { id: 'pA', kind: 'waterA', cap: 3, offer: pumpBid(s) },
       { id: 'bat', kind: 'other', cap: 2, offer: 230 },
       { id: 'oil', kind: 'other', cap: 1.5, offer: 300 }
@@ -467,7 +470,7 @@ footer p { margin: 0 0 6px; }
 
   function $(sel) { return document.querySelector(sel); }
   function fmt0(v) { return Math.round(v).toLocaleString('it-IT'); }
-  function fmtGW(v) { return v.toLocaleString('it-IT', { maximumFractionDigits: 1 }) + ' GW'; }
+  function fmtGW(v) { return Math.round(v * 1000).toLocaleString('it-IT') + ' MW'; }
   function fmtM(v) {
     var x = Math.round(v / 1e4) / 100;
     if (x === 0) x = 0;
@@ -482,10 +485,27 @@ footer p { margin: 0 0 6px; }
   function drawChart(r) {
     var host = $('#chart');
     var W = Math.max(280, Math.round(host.clientWidth || 340));
-    var H = Math.round(Math.min(340, Math.max(190, W * 0.56)));
-    var m = { l: 36, r: 10, t: 20, b: 26 };
-    var xMax = Math.ceil((r.totalCap + state.withheld) / 5) * 5;
+    var m = { l: 36, r: 10, t: 20, b: 48 };
+    var xMax = r.totalCap + state.withheld;
     function X(v) { return m.l + (v / xMax) * (W - m.l - m.r); }
+    var blocks = r.list.map(function (u) { return { a: u.x0, b: u.x1, v: u.cap, ghost: false }; });
+    if (state.withheld > 0) blocks.push({ a: r.totalCap, b: r.totalCap + state.withheld, v: state.withheld, ghost: true });
+    function placeDims(list, n, force) {
+      var ends = [], ok = true, out = [];
+      for (var j = 0; j < n; j++) ends.push(-1e9);
+      list.forEach(function (k, i) {
+        var xa = X(k.a) + 1.5, xb = Math.max(X(k.b) - 1.5, xa);
+        var lab = Math.round(k.v * 1000).toLocaleString('it-IT'), w = lab.length * 5.8 + 4;
+        var cx = Math.min(Math.max((xa + xb) / 2, m.l + w / 2 - 4), W - w / 2), row = i % n;
+        if (cx - w / 2 < ends[row]) ok = false;
+        ends[row] = cx + w / 2;
+        out.push({ xa: xa, xb: xb, cx: cx, lab: lab, row: row, ghost: k.ghost });
+      });
+      return (ok || force) ? { n: n, items: out } : null;
+    }
+    var dims = placeDims(blocks, 2) || placeDims(blocks, 3) || placeDims(blocks, 4, true);
+    m.b = 18 + dims.n * 15;
+    var H = Math.round(Math.min(370, Math.max(225, W * 0.62)) + (dims.n - 2) * 15);
     function Y(v) { return H - m.b - (Math.min(v, YMAX) / YMAX) * (H - m.t - m.b); }
     var s = '<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="var(--gas-a)" stroke-width="2"></line></pattern></defs>';
     [0, 100, 200, 300].forEach(function (t) {
@@ -493,10 +513,6 @@ footer p { margin: 0 0 6px; }
       s += '<text class="tick" x="' + (m.l - 6) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + t + '</text>';
     });
     s += '<text class="tick" x="' + m.l + '" y="' + (m.t - 8) + '">€/MWh</text>';
-    for (var t = 0; t <= xMax - 8; t += 10) {
-      s += '<text class="tick" x="' + X(t) + '" y="' + (H - 8) + '" text-anchor="middle">' + t + '</text>';
-    }
-    s += '<text class="tick" x="' + (W - m.r) + '" y="' + (H - 8) + '" text-anchor="end">' + xMax + ' GW</text>';
 
     r.list.forEach(function (u) {
       var x = X(u.x0) + 0.5, w = Math.max(1, X(u.x1) - X(u.x0) - 1);
@@ -513,8 +529,17 @@ footer p { margin: 0 0 6px; }
       s += '<text class="lab halo" x="' + ((gx0 + gx1) / 2) + '" y="' + (gy - 6) + '" text-anchor="middle">ferme</text>';
     }
 
+    var y0 = Y(0);
+    s += '<text class="tick" x="' + (m.l - 6) + '" y="' + (y0 + 18) + '" text-anchor="end">MW</text>';
+    dims.items.forEach(function (d) {
+      var y = y0 + 14 + d.row * 15, cls = d.ghost ? 'dim ghost' : 'dim';
+      s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + d.xb + '" y1="' + y + '" y2="' + y + '"></line>';
+      s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + d.xa + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
+      s += '<line class="' + cls + '" x1="' + d.xb + '" x2="' + d.xb + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
+      s += '<text class="dimlab halo" x="' + d.cx + '" y="' + (y + 3.5) + '" text-anchor="middle">' + d.lab + '</text>';
+    });
     var xd = X(r.D);
-    s += '<line class="demand" x1="' + xd + '" x2="' + xd + '" y1="' + m.t + '" y2="' + Y(0) + '"></line>';
+    s += '<line class="demand" x1="' + xd + '" x2="' + xd + '" y1="' + m.t + '" y2="' + (y0 + 8 + dims.n * 15) + '"></line>';
     s += '<text class="lab halo" x="' + (xd - 5) + '" y="' + (m.t + 10) + '" text-anchor="end">domanda ' + fmtGW(r.D) + '</text>';
     var yp = Y(r.price);
     s += '<line class="priceline" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + yp + '" y2="' + yp + '"></line>';
@@ -557,7 +582,7 @@ footer p { margin: 0 0 6px; }
     $('#gas-hint').textContent = gh;
 
     $('#withheld').value = state.withheld;
-    $('#withheld-out').textContent = fmtGW(state.withheld) + ' su 6';
+    $('#withheld-out').textContent = fmtGW(state.withheld) + ' su 6.000';
     $('#markup').value = state.markup;
     $('#markup-out').textContent = '+' + state.markup + ' €/MWh';
     var pb = pumpBid(state), wv = correctWater(state);

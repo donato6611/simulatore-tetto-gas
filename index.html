@@ -376,8 +376,9 @@ footer p { margin: 0 0 6px; }
         <input type="range" id="withheld" min="0" max="6" step="0.5">
       </div>
       <div class="field">
-        <div class="field-head"><label for="markup">Rialzo sulle offerte delle sue centrali a gas</label><output id="markup-out" for="markup"></output></div>
-        <input type="range" id="markup" min="0" max="80" step="5">
+        <div class="field-head"><label for="markup">Prezzo offerto dalle sue centrali a gas</label><output id="markup-out" for="markup"></output></div>
+        <input type="range" id="markup" min="100" max="300" step="1">
+        <p class="hint" id="markup-hint"></p>
       </div>
       <div class="field">
         <div class="field-head"><label for="pump">Prezzo offerto dai suoi pompaggi</label><output id="pump-out" for="pump"></output></div>
@@ -468,7 +469,7 @@ footer p { margin: 0 0 6px; }
   };
   var COLORS = { gasA: 'var(--gas-a)', waterA: 'var(--water-a)', gasO: 'var(--gas-o)', other: 'var(--other)' };
 
-  var state = { tope: true, hour: 'sera', gas: 80, withheld: 0, markup: 0, pumpMode: 'correct', pump: 147 };
+  var state = { tope: true, hour: 'sera', gas: 80, withheld: 0, gasMode: 'cost', gasOffer: 136, pumpMode: 'correct', pump: 147 };
 
   function topeActive(s) { return s.tope && s.gas > CAP; }
   function bidGas(s) { return topeActive(s) ? CAP : s.gas; }
@@ -480,6 +481,13 @@ footer p { margin: 0 0 6px; }
     if (s.pumpMode === 'pre') return Math.min(300, preLevel(s));
     return s.pump;
   }
+  function gasCostA(s) { return gasCost(bidGas(s), 0.58); }
+  function gasOfferOf(s) {
+    if (s.gasMode === 'plus40') return gasCostA(s) + 40;
+    if (s.gasMode === 'manual') return s.gasOffer;
+    return gasCostA(s);
+  }
+  function markupOf(s) { return gasOfferOf(s) - gasCostA(s); }
   function copy(s, extra) { var o = {}, k; for (k in s) o[k] = s[k]; for (k in extra) o[k] = extra[k]; return o; }
 
   function units(s) {
@@ -489,7 +497,7 @@ footer p { margin: 0 0 6px; }
       { id: 'ror', kind: 'other', cap: 3, offer: 5 },
       { id: 'imp', kind: 'other', cap: 7, offer: 130 },
       { id: 'g1', kind: 'gasO', cap: 10, eta: 0.60, offer: gasCost(g, 0.60) },
-      { id: 'gA', kind: 'gasA', cap: 6 - s.withheld, eta: 0.58, offer: gasCost(g, 0.58) + s.markup },
+      { id: 'gA', kind: 'gasA', cap: 6 - s.withheld, eta: 0.58, offer: gasOfferOf(s) },
       { id: 'g2', kind: 'gasO', cap: 8, eta: 0.56, offer: gasCost(g, 0.56) },
       { id: 'pA', kind: 'waterA', cap: 3, offer: pumpBid(s) },
       { id: 'bat', kind: 'other', cap: 2, offer: 230 },
@@ -510,7 +518,7 @@ footer p { margin: 0 0 6px; }
       if (!marg && cum >= D - 1e-9) marg = u;
     });
     if (!marg) marg = list[list.length - 1];
-    var price = marg.offer, active = topeActive(s), compliantA = !(active && s.markup > 0);
+    var price = marg.offer, active = topeActive(s), compliantA = !(active && markupOf(s) > 0.5);
     var reimb = 0, grpGas = 0, grpPump = 0, qA = 0, reimbA = 0, qP = 0, costA = gasCost(s.gas, 0.58);
     list.forEach(function (u) {
       if (u.eta) {
@@ -638,17 +646,17 @@ footer p { margin: 0 0 6px; }
   }
 
   function presetOf(s) {
-    if (s.withheld === 0 && s.markup === 0 && s.pumpMode === 'correct') return 'correct';
-    if (s.withheld === 0 && s.markup === 40 && s.pumpMode === 'correct') return 'inflate';
-    if (s.withheld === 3 && s.markup === 0 && s.pumpMode === 'pre') return 'withhold';
+    if (s.withheld === 0 && s.gasMode === 'cost' && s.pumpMode === 'correct') return 'correct';
+    if (s.withheld === 0 && s.gasMode === 'plus40' && s.pumpMode === 'correct') return 'inflate';
+    if (s.withheld === 3 && s.gasMode === 'cost' && s.pumpMode === 'pre') return 'withhold';
     return null;
   }
 
   function render() {
     var r = solve(state);
-    var ref = solve(copy(state, { withheld: 0, markup: 0, pumpMode: 'correct' }));
-    var noTope = solve(copy(state, { tope: false, withheld: 0, markup: 0, pumpMode: 'correct' }));
-    var withTope = solve(copy(state, { tope: true, withheld: 0, markup: 0, pumpMode: 'correct' }));
+    var ref = solve(copy(state, { withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
+    var noTope = solve(copy(state, { tope: false, withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
+    var withTope = solve(copy(state, { tope: true, withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
 
     $('#price').textContent = fmt0(r.price);
     $('#setter').innerHTML = '<span class="dot" style="background:' + COLORS[r.marg.kind] + '"></span>' + WHO[r.marg.id];
@@ -671,8 +679,10 @@ footer p { margin: 0 0 6px; }
 
     $('#withheld').value = state.withheld;
     $('#withheld-out').textContent = fmtGW(state.withheld) + ' su 6.000';
-    $('#markup').value = state.markup;
-    $('#markup-out').textContent = '+' + state.markup + ' €/MWh';
+    var ga = gasOfferOf(state), gc = gasCostA(state);
+    $('#markup').value = Math.round(ga);
+    $('#markup-out').textContent = fmt0(ga) + ' €/MWh';
+    $('#markup-hint').textContent = 'Offerta corretta, pari al costo: ' + fmt0(gc) + ' €/MWh' + (r.active ? ', calcolato con il gas al tetto.' : '.');
     var pb = pumpBid(state), wv = correctWater(state);
     $('#pump').value = pb;
     $('#pump-out').textContent = pb + ' €/MWh';
@@ -704,18 +714,19 @@ footer p { margin: 0 0 6px; }
         '<span class="val">' + fmtM(row.v) + '</span></div>';
     }).join('');
 
-    var items = [];
+    var items = [], mk = markupOf(state);
     if (!state.tope) {
       items.push(['info', 'Senza tetto non c’è un prezzo massimo per le offerte del gas: un rialzo va giustificato caso per caso con il costo opportunità.']);
-      if (state.markup > 0) items.push(['warn', 'Il rialzo del Gruppo A alza il prezzo senza far scattare controlli automatici.']);
+      if (mk > 0.5) items.push(['warn', 'Il Gruppo A offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
     } else if (!r.active) {
       items.push(['info', 'Con il gas a ' + state.gas + ' €/MWh il tetto non è attivo: valgono le regole ordinarie.']);
-      if (state.markup > 0) items.push(['warn', 'Il rialzo del Gruppo A alza il prezzo senza far scattare controlli automatici.']);
-    } else if (state.markup > 0) {
+      if (mk > 0.5) items.push(['warn', 'Il Gruppo A offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
+    } else if (mk > 0.5) {
       items.push(['warn', 'Le offerte del Gruppo A superano il prezzo massimo: perde il rimborso sul gas e rischia sanzioni.']);
     } else {
       items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo: per il controllo del tetto è tutto in regola.']);
     }
+    if (mk < -0.5) items.push(['info', 'Il Gruppo A offre il gas sotto il costo: rischia di produrre in perdita se è la sua offerta a fissare il prezzo.']);
     if (state.withheld > 0) {
       items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas del Gruppo A risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
     }
@@ -740,15 +751,15 @@ footer p { margin: 0 0 6px; }
   document.querySelectorAll('[data-preset]').forEach(function (b) {
     b.addEventListener('click', function () {
       var k = b.dataset.preset;
-      if (k === 'correct') { state.withheld = 0; state.markup = 0; state.pumpMode = 'correct'; }
-      if (k === 'inflate') { state.withheld = 0; state.markup = 40; state.pumpMode = 'correct'; }
-      if (k === 'withhold') { state.withheld = 3; state.markup = 0; state.pumpMode = 'pre'; }
+      if (k === 'correct') { state.withheld = 0; state.gasMode = 'cost'; state.pumpMode = 'correct'; }
+      if (k === 'inflate') { state.withheld = 0; state.gasMode = 'plus40'; state.pumpMode = 'correct'; }
+      if (k === 'withhold') { state.withheld = 3; state.gasMode = 'cost'; state.pumpMode = 'pre'; }
       render();
     });
   });
   $('#gas').addEventListener('input', function (e) { state.gas = Number(e.target.value); render(); });
   $('#withheld').addEventListener('input', function (e) { state.withheld = Number(e.target.value); render(); });
-  $('#markup').addEventListener('input', function (e) { state.markup = Number(e.target.value); render(); });
+  $('#markup').addEventListener('input', function (e) { state.gasMode = 'manual'; state.gasOffer = Number(e.target.value); render(); });
   $('#pump').addEventListener('input', function (e) { state.pumpMode = 'manual'; state.pump = Number(e.target.value); render(); });
 
   var lastW = 0;

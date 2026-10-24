@@ -101,6 +101,8 @@ header h1 {
   max-width: 16ch;
 }
 header p { margin: 0; color: var(--muted); max-width: 62ch; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 14px; align-items: start; }
+.mascot { width: clamp(110px, 30vw, 220px); height: auto; display: block; margin-top: 4px; }
 
 .grid {
   display: grid;
@@ -268,10 +270,53 @@ footer p { margin: 0 0 6px; }
 </head>
 <body>
 <div class="wrap">
-  <header>
+  <header class="hero">
+    <div>
     <h1>Tetto al gas e capacità trattenuta</h1>
     <p>Un’ora del mercato elettrico, semplificata. Il Gruppo A possiede centrali a gas e pompaggi: cambia le sue scelte, accendi o spegni il tetto e guarda chi fissa il prezzo e chi paga.</p>
     <p class="disclaimer">Tutti i valori sono inventati e servono solo a scopo didattico.</p>
+    </div>
+    <svg class="mascot" viewBox="0 0 240 132" role="img" aria-label="Un gattino arancione allunga la zampa verso un topolino che regge un cartello con scritto tope">
+<rect x="2" y="2" width="236" height="128" rx="20" fill="#E9EEF2"></rect>
+<line x1="18" y1="118" x2="222" y2="118" stroke="#C9D1D8" stroke-width="3" stroke-linecap="round"></line>
+<path d="M42 104 C18 102 14 70 34 60" fill="none" stroke="#14202B" stroke-width="12" stroke-linecap="round"></path>
+<path d="M42 104 C18 102 14 70 34 60" fill="none" stroke="#E8782A" stroke-width="7" stroke-linecap="round"></path>
+<ellipse cx="70" cy="98" rx="34" ry="19" fill="#E8782A" stroke="#14202B" stroke-width="2.5"></ellipse>
+<path d="M58 82 l-3 8 M68 80 l-2 9 M78 81 l-1 8" fill="none" stroke="#B9541A" stroke-width="2.5" stroke-linecap="round"></path>
+<ellipse cx="48" cy="114" rx="10" ry="5" fill="#E8782A" stroke="#14202B" stroke-width="2.5"></ellipse>
+<ellipse cx="92" cy="114" rx="10" ry="5" fill="#E8782A" stroke="#14202B" stroke-width="2.5"></ellipse>
+<path d="M96 98 C110 94 122 96 132 101" fill="none" stroke="#14202B" stroke-width="12" stroke-linecap="round"></path>
+<path d="M96 98 C110 94 122 96 132 101" fill="none" stroke="#E8782A" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="134" cy="102" r="6.5" fill="#E8782A" stroke="#14202B" stroke-width="2.5"></circle>
+<path d="M139 86 q4 5 0 10 M144 82 q7 9 0 18" fill="none" stroke="#7D8A97" stroke-width="2" stroke-linecap="round"></path>
+<path d="M84 60 L86 36 L101 50 Z" fill="#E8782A" stroke="#14202B" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M106 49 L121 37 L119 61 Z" fill="#E8782A" stroke="#14202B" stroke-width="2.5" stroke-linejoin="round"></path>
+<path d="M88 55 L89 42 L97 50 Z" fill="#F4B3C2"></path>
+<path d="M109 49 L118 42 L117 55 Z" fill="#F4B3C2"></path>
+<circle cx="102" cy="70" r="22" fill="#E8782A" stroke="#14202B" stroke-width="2.5"></circle>
+<path d="M96 51 l1 6 M102 49 l0 7 M108 51 l-1 6" fill="none" stroke="#B9541A" stroke-width="2.5" stroke-linecap="round"></path>
+<ellipse cx="97" cy="68" rx="3.2" ry="4.2" fill="#14202B"></ellipse>
+<ellipse cx="111" cy="68" rx="3.2" ry="4.2" fill="#14202B"></ellipse>
+<circle cx="98.3" cy="66.4" r="1.2" fill="#FFFFFF"></circle>
+<circle cx="112.3" cy="66.4" r="1.2" fill="#FFFFFF"></circle>
+<path d="M102 76 h4 l-2 2.6 z" fill="#E58AA0"></path>
+<path d="M100 81 q2 2.5 4 0 q2 2.5 4 0" fill="none" stroke="#14202B" stroke-width="1.8" stroke-linecap="round"></path>
+<path d="M92 77 l-14 -2 M92 80 l-14 3 M116 77 l14 -3 M116 80 l14 2" fill="none" stroke="#14202B" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M199 108 C214 110 218 94 228 98" fill="none" stroke="#14202B" stroke-width="2" stroke-linecap="round"></path>
+<line x1="190" y1="104" x2="198" y2="64" stroke="#14202B" stroke-width="2.2" stroke-linecap="round"></line>
+<rect x="176" y="44" width="46" height="22" rx="5" fill="#FFFFFF" stroke="#14202B" stroke-width="2"></rect>
+<text x="199" y="60" text-anchor="middle" font-family="'Barlow Semi Condensed','Barlow','Arial Narrow',sans-serif" font-weight="800" font-size="14" fill="#14202B">tope</text>
+<ellipse cx="186" cy="105" rx="16" ry="12" fill="#AEB9C4" stroke="#14202B" stroke-width="2.5"></ellipse>
+<ellipse cx="177" cy="117" rx="4.5" ry="2.2" fill="#E58AA0"></ellipse>
+<ellipse cx="194" cy="117" rx="4.5" ry="2.2" fill="#E58AA0"></ellipse>
+<circle cx="172" cy="85" r="7.5" fill="#AEB9C4" stroke="#14202B" stroke-width="2.2"></circle>
+<circle cx="172" cy="85" r="4" fill="#F4B3C2"></circle>
+<ellipse cx="168" cy="97" rx="11" ry="9" fill="#AEB9C4" stroke="#14202B" stroke-width="2.5"></ellipse>
+<circle cx="157.5" cy="98.5" r="2.4" fill="#E58AA0"></circle>
+<circle cx="164" cy="94.5" r="1.7" fill="#14202B"></circle>
+<path d="M158 100 l-9 -2 M158 101.5 l-9 3" fill="none" stroke="#14202B" stroke-width="1.3" stroke-linecap="round"></path>
+<path d="M190 100 q2 -4 5 -6" fill="none" stroke="#14202B" stroke-width="2" stroke-linecap="round"></path>
+</svg>
   </header>
 
   <div class="grid">
@@ -361,6 +406,13 @@ footer p { margin: 0 0 6px; }
         <p>Costo = prezzo dell’ora × energia consumata nell’ora + rimborso alle centrali a gas.</p>
         <p>Il rimborso c’è solo con il tetto attivo: per ogni MWh prodotto con il gas vale (prezzo del gas − 60) ÷ rendimento della centrale. Ipotesi semplificative: tutti pagano il prezzo dell’ora, il rimborso è a carico di tutti i consumatori e restano fuori reti, oneri e imposte.</p>
         <p class="live" id="calc-live"></p>
+      </details>
+
+      <details class="calc">
+        <summary>Come calcolo il guadagno del Gruppo A</summary>
+        <p>Guadagno = margine delle sue centrali a gas + margine dei suoi pompaggi, nell’ora.</p>
+        <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
+        <p class="live" id="grp-live"></p>
       </details>
 
       <h3>Costo per i consumatori, a confronto</h3>
@@ -453,21 +505,37 @@ footer p { margin: 0 0 6px; }
     });
     if (!marg) marg = list[list.length - 1];
     var price = marg.offer, active = topeActive(s), compliantA = !(active && s.markup > 0);
-    var reimb = 0, grpGas = 0, grpPump = 0;
+    var reimb = 0, grpGas = 0, grpPump = 0, qA = 0, reimbA = 0, qP = 0, costA = gasCost(s.gas, 0.58);
     list.forEach(function (u) {
       if (u.eta) {
         var r = active ? (s.gas - CAP) / u.eta : 0;
         var paid = (u.id === 'gA' && !compliantA) ? 0 : r;
         reimb += u.q * 1000 * paid;
-        if (u.id === 'gA') grpGas = u.q * 1000 * (price - gasCost(s.gas, u.eta) + paid);
+        if (u.id === 'gA') { qA = u.q; reimbA = paid; grpGas = u.q * 1000 * (price - gasCost(s.gas, u.eta) + paid); }
       }
-      if (u.id === 'pA') grpPump = u.q * 1000 * (price - PUMP_COST);
+      if (u.id === 'pA') { qP = u.q; grpPump = u.q * 1000 * (price - PUMP_COST); }
     });
     var energy = D * 1000 * price;
     return { list: list, marg: marg, price: price, D: D, energy: energy, reimb: reimb,
-      consumers: energy + reimb, group: grpGas + grpPump, active: active, compliantA: compliantA, totalCap: cum };
+      consumers: energy + reimb, group: grpGas + grpPump, active: active, compliantA: compliantA, totalCap: cum,
+      grpGas: grpGas, grpPump: grpPump, qA: qA, reimbA: reimbA, qP: qP, costA: costA };
   }
 
+  function fmt1(v) { return v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+  function fmtK(v) { var x = Math.round(v / 1000); if (x === 0) return '0 €'; return x.toLocaleString('it-IT') + ' mila €'; }
+  function grpLive(r) {
+    var parts = [];
+    if (r.qA > 0) {
+      var expr = fmt1(r.price) + ' − ' + fmt1(r.costA) + (r.reimbA > 0 ? ' + ' + fmt1(r.reimbA) + ' di rimborso' : '');
+      if (r.active && r.compliantA === false) expr += ', rimborso perso';
+      parts.push('centrali a gas ' + fmt0(r.qA * 1000) + ' MWh × (' + expr + ') = ' + fmtK(r.grpGas));
+    } else {
+      parts.push('centrali a gas non chiamate');
+    }
+    if (r.qP > 0) parts.push('pompaggi ' + fmt0(r.qP * 1000) + ' MWh × (' + fmt1(r.price) + ' − 100) = ' + fmtK(r.grpPump));
+    else parts.push('pompaggi non chiamati');
+    return 'In questo scenario: ' + parts.join('; ') + '. Totale ' + fmtK(Math.round(r.grpGas / 1000) * 1000 + Math.round(r.grpPump / 1000) * 1000) + '.';
+  }
   function $(sel) { return document.querySelector(sel); }
   function fmt0(v) { return Math.round(v).toLocaleString('it-IT'); }
   function fmtGW(v) { return Math.round(v * 1000).toLocaleString('it-IT') + ' MW'; }
@@ -598,6 +666,7 @@ footer p { margin: 0 0 6px; }
       : 'solo energia: il tetto non è attivo';
     $('#calc-live').textContent = 'In questo scenario: ' + fmt0(r.price) + ' €/MWh × ' + fmt0(r.D * 1000) + ' MWh = ' + fmtM(r.energy) +
       (r.active ? ', più rimborso ' + fmtM(r.reimb) + ' = ' + fmtM(r.consumers) + '.' : ', senza rimborso perché il tetto non è attivo.');
+    $('#grp-live').textContent = grpLive(r);
     $('#grp').textContent = fmtM(r.group);
     var d = r.group - ref.group;
     $('#grp-note').textContent = Math.abs(d) < 5000 ? 'come con offerte corrette' : signed(d) + ' rispetto a offerte corrette';
@@ -627,7 +696,7 @@ footer p { margin: 0 0 6px; }
       items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo: per il controllo del tetto è tutto in regola.']);
     }
     if (state.withheld > 0) {
-      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas del Gruppo A risultano ferme. Il controllo del tetto guarda i prezzi, non le quantità: serve la verifica sulle indisponibilità.']);
+      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas del Gruppo A risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
     }
     if (pb > wv + 10) {
       items.push(['warn', 'I pompaggi del Gruppo A offrono ' + pb + ' €/MWh contro un valore coerente di ' + wv + ' €/MWh: è la stima più difficile da controllare.']);

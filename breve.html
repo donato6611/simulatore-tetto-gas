@@ -288,6 +288,12 @@ button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
   </details>
 
   <details class="calc">
+    <summary>Come calcolo il rimborso del tetto</summary>
+    <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza con il prezzo vero del gas.</p>
+    <p>Rimborso = (prezzo del gas − 60) × gas bruciato. Una centrale con rendimento del 56% brucia 1 ÷ 0,56 ≈ 1,8 MWh di gas per ogni MWh di elettricità, quindi per ogni MWh prodotto il rimborso vale (prezzo del gas − 60) ÷ rendimento. Come nelle regole proposte da ARERA, spetta su tutto il gas bruciato, anche quando il prezzo lo fa un altro impianto, e si paga in bolletta.</p>
+    <p class="live" id="reimb-live"></p>
+  </details>
+  <details class="calc">
     <summary>Come calcolo il guadagno del Gruppo A</summary>
     <p>Guadagno = margine delle sue centrali a gas + margine dei suoi pompaggi, nell’ora.</p>
     <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
@@ -392,6 +398,20 @@ button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
     else parts.push('pompaggi non chiamati');
     return 'In questo scenario: ' + parts.join('; ') + '. Totale ' + fmtK(Math.round(r.grpGas / 1000) * 1000 + Math.round(r.grpPump / 1000) * 1000) + '.';
   }
+  function reimbLive(r, gas, topeOn) {
+    if (!r.active) return topeOn ? 'Con il gas a ' + gas + ' €/MWh il tetto non scatta: nessun rimborso.' : 'Con il tetto spento non c’è rimborso.';
+    var names = { g1: 'efficienti', gA: 'Gruppo A', g2: 'meno efficienti' };
+    var parts = [], tot = 0;
+    r.list.forEach(function (u) {
+      if (!u.eta || u.q <= 0) return;
+      var lost = u.id === 'gA' && r.compliantA === false;
+      var k = lost ? 0 : Math.round(u.q * 1000 * (gas - CAP) / u.eta / 1000);
+      tot += k;
+      parts.push(names[u.id] + ' ' + fmt0(u.q * 1000) + ' MWh × ' + (gas - CAP) + ' ÷ ' + u.eta.toLocaleString('it-IT', { minimumFractionDigits: 2 }) + (lost ? ' = 0 € (rimborso perso)' : ' = ' + fmtK(k * 1000)));
+    });
+    if (!parts.length) return 'In questo scenario nessuna centrale a gas produce, quindi non c’è rimborso.';
+    return 'In questo scenario il gas costa ' + gas + ' €/MWh, quindi il rimborso è ' + (gas - CAP) + ' € per ogni MWh di gas bruciato: ' + parts.join('; ') + '. Totale ' + fmtK(tot * 1000) + ', pagato in bolletta.';
+  }
   function $(sel) { return document.querySelector(sel); }
   function fmt0(v) { return Math.round(v).toLocaleString('it-IT'); }
   function fmtGW(v) { return Math.round(v * 1000).toLocaleString('it-IT') + ' MW'; }
@@ -490,6 +510,7 @@ button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
     $('#calc-live').textContent = 'In questo scenario: ' + fmt0(r.price) + ' €/MWh × ' + fmt0(r.D * 1000) + ' MWh = ' + fmtM(energy) +
       (r.active ? ', più rimborso ' + fmtM(r.reimb) + ' = ' + fmtM(r.consumers) + '.' : ', senza rimborso perché il tetto non è attivo.');
     $('#grp-live').textContent = grpLive(r);
+    $('#reimb-live').textContent = reimbLive(r, GAS, ui.tope);
     $('#grp').textContent = fmtM(r.group);
     var dg = r.group - corr.group, gd = $('#grp-d');
     gd.textContent = Math.abs(dg) < 5000 ? 'come con offerte corrette' : signed(dg) + ' rispetto a offerte corrette';

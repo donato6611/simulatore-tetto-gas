@@ -367,7 +367,7 @@ footer p { margin: 0 0 6px; }
       </div>
       <div class="field">
         <div class="field-head"><label for="demand">Domanda</label><output id="demand-out" for="demand"></output></div>
-        <input type="range" id="demand" min="25" max="42" step="0.5">
+        <input type="range" id="demand" min="15" max="42" step="0.5">
         <p class="hint">Valori tipici: 36.000 MW la sera di punta, 34.000 MW il pomeriggio di sole. Cambiando ora si torna al valore tipico.</p>
       </div>
       <div class="field">
@@ -432,7 +432,7 @@ footer p { margin: 0 0 6px; }
       <details class="calc">
         <summary>Come calcolo il guadagno del Gruppo A</summary>
         <p>Guadagno = margine delle sue centrali a gas + margine dei suoi pompaggi, nell’ora.</p>
-        <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
+        <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. Questo margine non tiene conto che l’acqua usata ora non sarà più disponibile in un’altra ora di punta: se i pompaggi vendono sotto il valore dell’acqua, il guadagno è solo apparente. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
         <p class="live" id="grp-live"></p>
       </details>
 
@@ -746,10 +746,15 @@ footer p { margin: 0 0 6px; }
       items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo: per il controllo del tetto è tutto in regola.']);
     }
     if (mk < -0.5) items.push(['info', 'Il Gruppo A offre il gas sotto il costo: rischia di produrre in perdita se è la sua offerta a fissare il prezzo.']);
+    var gcA = gasCostA(state), gasOutCost = (6 - state.withheld) > 0 && r.qA === 0 && gcA > r.price, pumpOutWater = r.qP === 0 && wv >= r.price;
+    if (gasOutCost && pumpOutWater) items.push(['info', 'Il Gruppo A resta fuori mercato, ed è la sua scelta migliore: per farsi chiamare dovrebbe offrire le centrali a gas sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + '), producendo in perdita, oppure vendere ora l’acqua dei pompaggi, che vale di più in un’altra ora di punta (' + wv + ' €/MWh). Puoi provarlo con i cursori.']);
+    else if (gasOutCost) items.push(['info', 'Le centrali a gas del Gruppo A restano fuori: per farsi chiamare dovrebbero offrire sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ') e produrrebbero in perdita.']);
+    else if (pumpOutWater) items.push(['info', 'I pompaggi del Gruppo A restano fuori: conviene tenere l’acqua per un’altra ora di punta, dove vale di più (' + wv + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ').']);
     if (state.withheld > 0) {
       items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas del Gruppo A risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
     }
     if (r.short) items.push(['warn', 'La domanda supera la capacità disponibile: nella realtà il prezzo salirebbe fino al massimo ammesso dal mercato.']);
+    if (r.qP > 0 && r.price < wv - 0.5) items.push(['warn', 'I pompaggi del Gruppo A vendono a ' + fmt0(r.price) + ' €/MWh, sotto il valore dell’acqua di ' + wv + ' €/MWh: il guadagno mostrato è solo apparente, perché quell’acqua renderebbe di più in un’altra ora di punta.']);
     if (pb > wv + 10) {
       items.push(['warn', 'I pompaggi del Gruppo A offrono ' + pb + ' €/MWh contro un valore dell’acqua concorrenziale di ' + wv + ' €/MWh: è la stima più difficile da controllare.']);
     }

@@ -394,7 +394,7 @@ footer p { margin: 0 0 6px; }
       <h2>Cosa fa l’operatore integrato</h2>
       <div class="presets" role="group" aria-label="Comportamenti tipici">
         <button type="button" data-preset="correct">Offre correttamente</button>
-        <button type="button" data-preset="inflate">Gonfia le offerte del gas di 40 €/MWh</button>
+        <button type="button" data-preset="inflate">Offre il gas 40 €/MWh sopra il costo</button>
         <button type="button" data-preset="withhold">Ferma il gas e alza l’idro</button>
       </div>
       <p class="hint">Prova: con il tetto acceso scegli «Ferma il gas e alza l’idro», poi passa al pomeriggio di sole.</p>
@@ -458,12 +458,12 @@ footer p { margin: 0 0 6px; }
 
     <section class="notes" aria-label="Come leggerlo">
       <h2>Come leggerlo</h2>
-      <h3>Perché il trucco funziona</h3>
+      <h3>Perché la strategia funziona</h3>
       <p>Il prezzo lo fissa l’ultimo impianto necessario a coprire la domanda, e tutti vengono pagati a quel prezzo. Se l’operatore integrato ferma una parte delle sue centrali a gas, diventano necessari i suoi pompaggi, che possono offrire più in alto. Con il tetto, le sue centrali a gas che producono comunque incassano quel prezzo più il rimborso sul gas.</p>
       <h3>Quando non funziona</h3>
-      <p>Se altri operatori hanno centrali a gas libere, scavalcano i pompaggi e il prezzo quasi non si muove. Succede nelle ore con molta offerta, come il pomeriggio di sole: il trucco rende solo dove l’operatore integrato è decisivo.</p>
+      <p>Se altri operatori hanno centrali a gas libere, scavalcano i pompaggi e il prezzo quasi non si muove. Succede nelle ore con molta offerta, come il pomeriggio di sole: la strategia rende solo dove l’operatore integrato è decisivo.</p>
       <h3>Cosa cambia con il tetto</h3>
-      <p>Senza tetto, il modo più semplice per alzare il prezzo è gonfiare le offerte del gas. Con il tetto quelle offerte hanno un prezzo massimo e il rialzo costa il rimborso. Restano invece da verificare con altri strumenti la capacità dichiarata ferma e il valore dell’acqua dei pompaggi.</p>
+      <p>Senza tetto, un’offerta del gas sopra il costo va giustificata caso per caso con il costo opportunità. Con il tetto quelle offerte hanno un prezzo massimo e il rialzo costa il rimborso. Restano invece da verificare con altri strumenti la capacità dichiarata ferma e il valore dell’acqua dei pompaggi.</p>
     </section>
   </div>
 
@@ -779,7 +779,7 @@ footer p { margin: 0 0 6px; }
     else if (gasOutCost) items.push(['info', 'Le centrali a gas dell’operatore integrato restano fuori: per farsi chiamare dovrebbero offrire sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ') e produrrebbero in perdita.']);
     else if (pumpOutWater) items.push(['info', 'I pompaggi dell’operatore integrato restano fuori: conviene tenere l’acqua per un’altra ora di punta, dove vale di più (' + wv + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ').']);
     if (state.withheld > 0) {
-      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas dell’operatore integrato risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
+      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas dell’operatore integrato risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme.']);
     }
     if (r.short) items.push(['warn', 'La domanda supera la capacità disponibile: nella realtà il prezzo salirebbe fino al massimo ammesso dal mercato.']);
     if (r.qP > 0 && r.price < wv - 0.5) items.push(['warn', 'I pompaggi dell’operatore integrato vendono a ' + fmt0(r.price) + ' €/MWh, sotto il valore dell’acqua di ' + wv + ' €/MWh: il guadagno mostrato è solo apparente, perché quell’acqua renderebbe di più in un’altra ora di punta.']);

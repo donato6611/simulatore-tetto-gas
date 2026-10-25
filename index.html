@@ -578,6 +578,8 @@ footer p { margin: 0 0 6px; }
       grpGas: grpGas, grpPump: grpPump, qA: qA, reimbA: reimbA, qP: qP, costA: costA };
   }
 
+  function round2(v) { return Math.round(v / 1e4) * 1e4; }
+  function consShown(r) { return round2(r.energy) + round2(r.reimb); }
   function fmt1(v) { return v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function fmtK(v) { var x = Math.round(v / 1000); if (x === 0) return '0 €'; return x.toLocaleString('it-IT') + ' mila €'; }
   function grpLive(r) {
@@ -737,22 +739,22 @@ footer p { margin: 0 0 6px; }
 
     drawChart(r);
 
-    $('#cons').textContent = fmtM(r.consumers);
+    $('#cons').textContent = fmtM(consShown(r));
     $('#cons-note').textContent = r.active
       ? 'energia ' + fmtM(r.energy) + ' più rimborso ' + fmtM(r.reimb)
       : 'solo energia: il tetto non è attivo';
     $('#calc-live').textContent = 'In questo scenario: ' + fmt0(r.price) + ' €/MWh × ' + fmt0(r.D * 1000) + ' MWh = ' + fmtM(r.energy) +
-      (r.active ? ', più rimborso ' + fmtM(r.reimb) + ' = ' + fmtM(r.consumers) + '.' : ', senza rimborso perché il tetto non è attivo.');
+      (r.active ? ', più rimborso ' + fmtM(r.reimb) + ' = ' + fmtM(consShown(r)) + '.' : ', senza rimborso perché il tetto non è attivo.');
     $('#grp-live').textContent = grpLive(r);
     $('#reimb-live').textContent = reimbLive(r, state.gas, state.tope);
     $('#grp').textContent = fmtM(r.group);
-    var d = r.group - ref.group;
+    var d = round2(r.group) - round2(ref.group);
     $('#grp-note').textContent = Math.abs(d) < 5000 ? 'come con offerte corrette' : signed(d) + ' rispetto a offerte corrette';
 
     var rows = [
-      { label: 'Senza tetto, offerte corrette', v: noTope.consumers, mine: false },
-      { label: 'Con tetto, offerte corrette', v: withTope.consumers, mine: false },
-      { label: 'La tua simulazione', v: r.consumers, mine: true }
+      { label: 'Senza tetto, offerte corrette', v: consShown(noTope), mine: false },
+      { label: 'Con tetto, offerte corrette', v: consShown(withTope), mine: false },
+      { label: 'La tua simulazione', v: consShown(r), mine: true }
     ];
     var max = Math.max(rows[0].v, rows[1].v, rows[2].v) * 1.04;
     $('#compare').innerHTML = rows.map(function (row) {

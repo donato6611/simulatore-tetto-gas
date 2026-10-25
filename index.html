@@ -282,7 +282,7 @@ footer p { margin: 0 0 6px; }
   <header class="hero">
     <div>
     <h1>Tetto al gas e capacità trattenuta</h1>
-    <p>Un’ora del mercato elettrico, semplificata. Il Gruppo A possiede centrali a gas e pompaggi: cambia le sue scelte, accendi o spegni il tetto e guarda chi fissa il prezzo e chi paga.</p>
+    <p>Un’ora del mercato elettrico, semplificata. Un operatore integrato possiede sia centrali a gas sia pompaggi: cambia le sue scelte, accendi o spegni il tetto e guarda chi fissa il prezzo e chi paga.</p>
     <p class="disclaimer">Tutti i valori sono inventati e servono solo a scopo didattico.</p>
     </div>
     <svg class="mascot" viewBox="0 0 240 132" role="img" aria-label="Un gattino arancione allunga la zampa verso un topolino che regge un cartello con scritto tope">
@@ -341,8 +341,8 @@ footer p { margin: 0 0 6px; }
     </section>
 
     <div class="legend" aria-label="Legenda del grafico">
-      <span><i class="sw" style="background: var(--gas-a)"></i>Centrali a gas del Gruppo A</span>
-      <span><i class="sw" style="background: var(--water-a)"></i>Pompaggi del Gruppo A</span>
+      <span><i class="sw" style="background: var(--gas-a)"></i>Centrali a gas dell’operatore integrato</span>
+      <span><i class="sw" style="background: var(--water-a)"></i>Pompaggi dell’operatore integrato</span>
       <span><i class="sw" style="background: var(--gas-o)"></i>Altre centrali a gas</span>
       <span><i class="sw" style="background: var(--other)"></i>Altri impianti</span>
       <span><i class="sw ghost"></i>Capacità ferma</span>
@@ -378,7 +378,7 @@ footer p { margin: 0 0 6px; }
 
       <hr class="sep">
 
-      <h2>Cosa fa il Gruppo A</h2>
+      <h2>Cosa fa l’operatore integrato</h2>
       <div class="presets" role="group" aria-label="Comportamenti tipici">
         <button type="button" data-preset="correct">Offre correttamente</button>
         <button type="button" data-preset="inflate">Gonfia le offerte del gas di 40 €/MWh</button>
@@ -410,7 +410,7 @@ footer p { margin: 0 0 6px; }
           <p class="note" id="cons-note"></p>
         </div>
         <div>
-          <dt>Guadagna il Gruppo A</dt>
+          <dt>Guadagna l’operatore integrato</dt>
           <dd id="grp"></dd>
           <p class="note" id="grp-note"></p>
         </div>
@@ -430,7 +430,7 @@ footer p { margin: 0 0 6px; }
         <p class="live" id="reimb-live"></p>
       </details>
       <details class="calc">
-        <summary>Come calcolo il guadagno del Gruppo A</summary>
+        <summary>Come calcolo il guadagno dell’operatore integrato</summary>
         <p>Guadagno = margine delle sue centrali a gas + margine dei suoi pompaggi, nell’ora.</p>
         <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. Questo margine non tiene conto che l’acqua usata ora non sarà più disponibile in un’altra ora di punta: se i pompaggi vendono sotto il valore dell’acqua, il guadagno è solo apparente. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
         <p class="live" id="grp-live"></p>
@@ -446,16 +446,16 @@ footer p { margin: 0 0 6px; }
     <section class="notes" aria-label="Come leggerlo">
       <h2>Come leggerlo</h2>
       <h3>Perché il trucco funziona</h3>
-      <p>Il prezzo lo fissa l’ultimo impianto necessario a coprire la domanda, e tutti vengono pagati a quel prezzo. Se il Gruppo A ferma una parte delle sue centrali a gas, diventano necessari i suoi pompaggi, che possono offrire più in alto. Con il tetto, le sue centrali a gas che producono comunque incassano quel prezzo più il rimborso sul gas.</p>
+      <p>Il prezzo lo fissa l’ultimo impianto necessario a coprire la domanda, e tutti vengono pagati a quel prezzo. Se l’operatore integrato ferma una parte delle sue centrali a gas, diventano necessari i suoi pompaggi, che possono offrire più in alto. Con il tetto, le sue centrali a gas che producono comunque incassano quel prezzo più il rimborso sul gas.</p>
       <h3>Quando non funziona</h3>
-      <p>Se altri operatori hanno centrali a gas libere, scavalcano i pompaggi e il prezzo quasi non si muove. Succede nelle ore con molta offerta, come il pomeriggio di sole: il trucco rende solo dove il gruppo è decisivo.</p>
+      <p>Se altri operatori hanno centrali a gas libere, scavalcano i pompaggi e il prezzo quasi non si muove. Succede nelle ore con molta offerta, come il pomeriggio di sole: il trucco rende solo dove l’operatore integrato è decisivo.</p>
       <h3>Cosa cambia con il tetto</h3>
       <p>Senza tetto, il modo più semplice per alzare il prezzo è gonfiare le offerte del gas. Con il tetto quelle offerte hanno un prezzo massimo e il rialzo costa il rimborso. Restano invece da verificare con altri strumenti la capacità dichiarata ferma e il valore dell’acqua dei pompaggi.</p>
     </section>
   </div>
 
   <footer>
-    <p>Modello didattico con valori inventati: una sola zona, un’ora, numeri tondi. Tutti offrono ai propri costi tranne il Gruppo A, che è immaginario e non rappresenta operatori reali.</p>
+    <p>Modello didattico con valori inventati: una sola zona, un’ora, numeri tondi. Tutti offrono ai propri costi tranne l’operatore integrato, che è immaginario e non rappresenta soggetti reali.</p>
     <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza su tutto il gas bruciato, come nelle regole proposte da ARERA nel documento di consultazione 222/2026. CO<sub>2</sub> e altri costi variabili: 32,5 €/MWh. Rendimento delle centrali a gas: dal 56% al 60%. Energia usata dai pompaggi: 100 €/MWh.</p>
   </footer>
 </div>
@@ -469,16 +469,16 @@ footer p { margin: 0 0 6px; }
     ror: 'lo fissa l’idroelettrico ad acqua fluente',
     imp: 'lo fissa l’import dai paesi vicini',
     g1: 'lo fissano le centrali a gas efficienti di altri operatori',
-    gA: 'lo fissano le centrali a gas del Gruppo A',
+    gA: 'lo fissano le centrali a gas dell’operatore integrato',
     g2: 'lo fissano le centrali a gas meno efficienti di altri operatori',
-    pA: 'lo fissano i pompaggi del Gruppo A',
+    pA: 'lo fissano i pompaggi dell’operatore integrato',
     bat: 'lo fissano batterie e impianti di punta',
     oil: 'lo fissa la riserva a olio'
   };
   var NAMES = {
     res: 'Solare ed eolico', ror: 'Idroelettrico ad acqua fluente', imp: 'Import dai paesi vicini',
-    g1: 'Centrali a gas efficienti, altri operatori', gA: 'Centrali a gas del Gruppo A',
-    g2: 'Centrali a gas meno efficienti, altri operatori', pA: 'Pompaggi del Gruppo A',
+    g1: 'Centrali a gas efficienti, altri operatori', gA: 'Centrali a gas dell’operatore integrato',
+    g2: 'Centrali a gas meno efficienti, altri operatori', pA: 'Pompaggi dell’operatore integrato',
     bat: 'Batterie e impianti di punta', oil: 'Riserva a olio'
   };
   var COLORS = { gasA: 'var(--gas-a)', waterA: 'var(--water-a)', gasO: 'var(--gas-o)', other: 'var(--other)' };
@@ -567,7 +567,7 @@ footer p { margin: 0 0 6px; }
   }
   function reimbLive(r, gas, topeOn) {
     if (!r.active) return topeOn ? 'Con il gas a ' + gas + ' €/MWh il tetto non scatta: nessun rimborso.' : 'Con il tetto spento non c’è rimborso.';
-    var names = { g1: 'efficienti', gA: 'Gruppo A', g2: 'meno efficienti' };
+    var names = { g1: 'efficienti', gA: 'operatore integrato', g2: 'meno efficienti' };
     var parts = [], tot = 0;
     r.list.forEach(function (u) {
       if (!u.eta || u.q <= 0) return;
@@ -636,7 +636,7 @@ footer p { margin: 0 0 6px; }
     if (state.withheld > 0) {
       var gA = units(state).filter(function (u) { return u.id === 'gA'; })[0];
       var gx0 = X(r.totalCap) + 1, gx1 = X(r.totalCap + state.withheld) - 1, gy = Y(gA.offer);
-      s += '<rect x="' + gx0 + '" y="' + gy + '" width="' + Math.max(1, gx1 - gx0) + '" height="' + (Y(0) - gy) + '" fill="url(#hatch)" fill-opacity="0.55" stroke="var(--gas-a)" stroke-width="1.5" stroke-dasharray="4 3"><title>Centrali a gas del Gruppo A dichiarate ferme: ' + fmtGW(state.withheld) + '</title></rect>';
+      s += '<rect x="' + gx0 + '" y="' + gy + '" width="' + Math.max(1, gx1 - gx0) + '" height="' + (Y(0) - gy) + '" fill="url(#hatch)" fill-opacity="0.55" stroke="var(--gas-a)" stroke-width="1.5" stroke-dasharray="4 3"><title>Centrali a gas dell’operatore integrato dichiarate ferme: ' + fmtGW(state.withheld) + '</title></rect>';
       s += '<text class="lab halo" x="' + ((gx0 + gx1) / 2) + '" y="' + (gy - 6) + '" text-anchor="middle">ferme</text>';
     }
 
@@ -736,27 +736,27 @@ footer p { margin: 0 0 6px; }
     var items = [], mk = markupOf(state);
     if (!state.tope) {
       items.push(['info', 'Senza tetto non c’è un prezzo massimo per le offerte del gas: un rialzo va giustificato caso per caso con il costo opportunità.']);
-      if (mk > 0.5) items.push(['warn', 'Il Gruppo A offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
+      if (mk > 0.5) items.push(['warn', 'L’operatore integrato offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
     } else if (!r.active) {
       items.push(['info', 'Con il gas a ' + state.gas + ' €/MWh il tetto non è attivo: valgono le regole ordinarie.']);
-      if (mk > 0.5) items.push(['warn', 'Il Gruppo A offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
+      if (mk > 0.5) items.push(['warn', 'L’operatore integrato offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
     } else if (mk > 0.5) {
-      items.push(['warn', 'Le offerte del Gruppo A superano il prezzo massimo: perde il rimborso sul gas e rischia sanzioni.']);
+      items.push(['warn', 'Le offerte dell’operatore integrato superano il prezzo massimo: perde il rimborso sul gas e rischia sanzioni.']);
     } else {
       items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo: per il controllo del tetto è tutto in regola.']);
     }
-    if (mk < -0.5) items.push(['info', 'Il Gruppo A offre il gas sotto il costo: rischia di produrre in perdita se è la sua offerta a fissare il prezzo.']);
+    if (mk < -0.5) items.push(['info', 'L’operatore integrato offre il gas sotto il costo: rischia di produrre in perdita se è la sua offerta a fissare il prezzo.']);
     var gcA = gasCostA(state), gasOutCost = (6 - state.withheld) > 0 && r.qA === 0 && gcA > r.price, pumpOutWater = r.qP === 0 && wv >= r.price;
-    if (gasOutCost && pumpOutWater) items.push(['info', 'Il Gruppo A resta fuori mercato, ed è la sua scelta migliore: per farsi chiamare dovrebbe offrire le centrali a gas sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + '), producendo in perdita, oppure vendere ora l’acqua dei pompaggi, che vale di più in un’altra ora di punta (' + wv + ' €/MWh). Puoi provarlo con i cursori.']);
-    else if (gasOutCost) items.push(['info', 'Le centrali a gas del Gruppo A restano fuori: per farsi chiamare dovrebbero offrire sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ') e produrrebbero in perdita.']);
-    else if (pumpOutWater) items.push(['info', 'I pompaggi del Gruppo A restano fuori: conviene tenere l’acqua per un’altra ora di punta, dove vale di più (' + wv + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ').']);
+    if (gasOutCost && pumpOutWater) items.push(['info', 'L’operatore integrato resta fuori mercato, ed è la sua scelta migliore: per farsi chiamare dovrebbe offrire le centrali a gas sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + '), producendo in perdita, oppure vendere ora l’acqua dei pompaggi, che vale di più in un’altra ora di punta (' + wv + ' €/MWh). Puoi provarlo con i cursori.']);
+    else if (gasOutCost) items.push(['info', 'Le centrali a gas dell’operatore integrato restano fuori: per farsi chiamare dovrebbero offrire sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ') e produrrebbero in perdita.']);
+    else if (pumpOutWater) items.push(['info', 'I pompaggi dell’operatore integrato restano fuori: conviene tenere l’acqua per un’altra ora di punta, dove vale di più (' + wv + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ').']);
     if (state.withheld > 0) {
-      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas del Gruppo A risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
+      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas dell’operatore integrato risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme: servono le verifiche sulle indisponibilità.']);
     }
     if (r.short) items.push(['warn', 'La domanda supera la capacità disponibile: nella realtà il prezzo salirebbe fino al massimo ammesso dal mercato.']);
-    if (r.qP > 0 && r.price < wv - 0.5) items.push(['warn', 'I pompaggi del Gruppo A vendono a ' + fmt0(r.price) + ' €/MWh, sotto il valore dell’acqua di ' + wv + ' €/MWh: il guadagno mostrato è solo apparente, perché quell’acqua renderebbe di più in un’altra ora di punta.']);
+    if (r.qP > 0 && r.price < wv - 0.5) items.push(['warn', 'I pompaggi dell’operatore integrato vendono a ' + fmt0(r.price) + ' €/MWh, sotto il valore dell’acqua di ' + wv + ' €/MWh: il guadagno mostrato è solo apparente, perché quell’acqua renderebbe di più in un’altra ora di punta.']);
     if (pb > wv + 10) {
-      items.push(['warn', 'I pompaggi del Gruppo A offrono ' + pb + ' €/MWh contro un valore dell’acqua concorrenziale di ' + wv + ' €/MWh: è la stima più difficile da controllare.']);
+      items.push(['warn', 'I pompaggi dell’operatore integrato offrono ' + pb + ' €/MWh contro un valore dell’acqua concorrenziale di ' + wv + ' €/MWh: è la stima più difficile da controllare.']);
     }
     if (r.active && !gasSets && (state.withheld > 0 || pb > wv + 10)) {
       items.push(['warn', 'Il prezzo non lo fa il gas, ma il rimborso si paga comunque su tutto il gas bruciato: ' + fmtM(r.reimb) + ' in quest’ora.']);

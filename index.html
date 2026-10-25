@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Tetto al gas e capacità trattenuta</title>
 <meta name="description" content="Simulatore didattico del mercato elettrico: cosa succede con e senza tetto al gas se un gruppo trattiene capacità. Valori inventati.">
 <meta property="og:type" content="website">
@@ -42,7 +43,7 @@
   --alert: #A6470C;
   --ok: #2F6B45;
   --focus: #1F6FB2;
-  color-scheme: light;
+  color-scheme: light dark;
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -64,6 +65,7 @@
     color-scheme: dark;
   }
 }
+:root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] {
   --ground: #0F161D;
   --surface: #17212B;
@@ -176,7 +178,7 @@ header p { margin: 0; color: var(--muted); max-width: 62ch; }
 .tick { fill: var(--muted); font-size: 11px; font-family: 'Barlow', sans-serif; }
 .lab { fill: var(--ink); font-size: 12px; font-weight: 600; font-family: 'Barlow', sans-serif; }
 .lab.strong { font-weight: 700; font-size: 13px; }
-.halo { paint-order: stroke; stroke: var(--ground); stroke-width: 4px; stroke-linejoin: round; }
+.halo { stroke: none; }
 .demand { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .priceline { stroke: var(--ink); stroke-width: 2; }
 .dim { stroke: var(--muted); stroke-width: 1; }
@@ -247,6 +249,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--focus); out
   font-variant-numeric: tabular-nums;
 }
 .figures .note { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+.figures .note.ref { font-size: 13px; line-height: 1.35; }
 h3 { font-family: 'Barlow Semi Condensed', 'Barlow', 'Arial Narrow', sans-serif; font-weight: 700; font-size: 19px; line-height: 1.2; margin: 22px 0 6px; }
 .bar-row { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto; gap: 10px; align-items: center; margin-top: 8px; font-size: 14px; }
 .bar-row .val { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
@@ -325,9 +328,6 @@ footer p { margin: 0 0 6px; }
 <path d="M100 81 q2 2.5 4 0 q2 2.5 4 0" fill="none" stroke="#14202B" stroke-width="1.8" stroke-linecap="round"></path>
 <path d="M92 77 l-14 -2 M92 80 l-14 3 M116 77 l14 -3 M116 80 l14 2" fill="none" stroke="#14202B" stroke-width="1.5" stroke-linecap="round"></path>
 <path d="M199 108 C214 110 218 94 228 98" fill="none" stroke="#14202B" stroke-width="2" stroke-linecap="round"></path>
-<line x1="190" y1="104" x2="198" y2="64" stroke="#14202B" stroke-width="2.2" stroke-linecap="round"></line>
-<rect x="176" y="44" width="46" height="22" rx="5" fill="#FFFFFF" stroke="#14202B" stroke-width="2"></rect>
-<text x="199" y="60" text-anchor="middle" font-family="'Barlow Semi Condensed','Barlow','Arial Narrow',sans-serif" font-weight="800" font-size="14" fill="#14202B">tope</text>
 <ellipse cx="186" cy="105" rx="16" ry="12" fill="#AEB9C4" stroke="#14202B" stroke-width="2.5"></ellipse>
 <ellipse cx="177" cy="117" rx="4.5" ry="2.2" fill="#E58AA0"></ellipse>
 <ellipse cx="194" cy="117" rx="4.5" ry="2.2" fill="#E58AA0"></ellipse>
@@ -337,7 +337,16 @@ footer p { margin: 0 0 6px; }
 <circle cx="157.5" cy="98.5" r="2.4" fill="#E58AA0"></circle>
 <circle cx="164" cy="94.5" r="1.7" fill="#14202B"></circle>
 <path d="M158 100 l-9 -2 M158 101.5 l-9 3" fill="none" stroke="#14202B" stroke-width="1.3" stroke-linecap="round"></path>
-<path d="M190 100 q2 -4 5 -6" fill="none" stroke="#14202B" stroke-width="2" stroke-linecap="round"></path>
+<g class="sign">
+<line x1="183" y1="117" x2="191" y2="63" stroke="#14202B" stroke-width="6" stroke-linecap="round"></line>
+<line x1="183" y1="117" x2="191" y2="63" stroke="#A9733E" stroke-width="3" stroke-linecap="round"></line>
+<g transform="rotate(-7 193 52)">
+<rect x="166" y="39" width="54" height="26" rx="2.5" fill="#D9A566" stroke="#14202B" stroke-width="2.2"></rect>
+<path d="M170 45.5 h12 M200 59 h15 M172 60.5 h7" stroke="#B7803F" stroke-width="1.2" stroke-linecap="round"></path>
+<text x="193" y="58.6" text-anchor="middle" font-family="'Barlow Semi Condensed','Barlow','Arial Narrow',sans-serif" font-weight="800" font-size="16.5" letter-spacing="0.6" fill="#1E140C">TOPE</text>
+</g>
+<ellipse cx="186.6" cy="94" rx="4.6" ry="3.6" fill="#AEB9C4" stroke="#14202B" stroke-width="1.8"></ellipse>
+</g>
 </svg>
   </header>
 
@@ -426,6 +435,7 @@ footer p { margin: 0 0 6px; }
           <dt>Guadagna l’operatore integrato</dt>
           <dd id="grp"></dd>
           <p class="note" id="grp-note"></p>
+          <p class="note ref">Offerte corrette: gas al costo, pompaggi al valore dell’acqua, nessuna centrale ferma, a parità di tetto, domanda e prezzo del gas.</p>
         </div>
       </dl>
 
@@ -643,7 +653,7 @@ footer p { margin: 0 0 6px; }
         var cx = Math.min(Math.max((xa + xb) / 2, m.l + w / 2 - 4), W - w / 2), row = i % n;
         if (cx - w / 2 < ends[row]) ok = false;
         ends[row] = cx + w / 2;
-        out.push({ xa: xa, xb: xb, cx: cx, lab: lab, row: row, ghost: k.ghost });
+        out.push({ xa: xa, xb: xb, cx: cx, w: w, lab: lab, row: row, ghost: k.ghost });
       });
       return (ok || force) ? { n: n, items: out } : null;
     }
@@ -677,13 +687,18 @@ footer p { margin: 0 0 6px; }
     s += '<text class="tick" x="' + (m.l - 6) + '" y="' + (y0 + 18) + '" text-anchor="end">MW</text>';
     dims.items.forEach(function (d) {
       var y = y0 + 14 + d.row * 15, cls = d.ghost ? 'dim ghost' : 'dim';
-      s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + d.xb + '" y1="' + y + '" y2="' + y + '"></line>';
-      s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + d.xa + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
-      s += '<line class="' + cls + '" x1="' + d.xb + '" x2="' + d.xb + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
+      // la quota lascia uno spazio alla cifra invece di coprirla: niente aloni, leggibile anche se il browser scurisce la pagina
+      if (d.xb - d.xa >= d.w + 6) {
+        var l1 = Math.min(d.xb, d.cx - d.w / 2), l2 = Math.max(d.xa, d.cx + d.w / 2);
+        if (l1 > d.xa + 0.5) s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + l1 + '" y1="' + y + '" y2="' + y + '"></line>';
+        if (d.xb > l2 + 0.5) s += '<line class="' + cls + '" x1="' + l2 + '" x2="' + d.xb + '" y1="' + y + '" y2="' + y + '"></line>';
+        s += '<line class="' + cls + '" x1="' + d.xa + '" x2="' + d.xa + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
+        s += '<line class="' + cls + '" x1="' + d.xb + '" x2="' + d.xb + '" y1="' + (y - 4) + '" y2="' + (y + 4) + '"></line>';
+      }
       s += '<text class="dimlab halo" x="' + d.cx + '" y="' + (y + 3.5) + '" text-anchor="middle">' + d.lab + '</text>';
     });
     var xd = X(r.D);
-    s += '<line class="demand" x1="' + xd + '" x2="' + xd + '" y1="' + m.t + '" y2="' + (y0 + 8 + dims.n * 15) + '"></line>';
+    s += '<line class="demand" x1="' + xd + '" x2="' + xd + '" y1="' + m.t + '" y2="' + (y0 + 4) + '"></line>';
     s += '<text class="lab halo" x="' + (xd - 5) + '" y="' + (m.t + 10) + '" text-anchor="end">domanda ' + fmtGW(r.D) + '</text>';
     var yp = Y(r.price);
     s += '<line class="priceline" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + yp + '" y2="' + yp + '"></line>';

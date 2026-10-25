@@ -409,7 +409,7 @@ footer p { margin: 0 0 6px; }
       </div>
       <div class="field">
         <div class="field-head"><label for="pump">Prezzo offerto dai suoi pompaggi</label><output id="pump-out" for="pump"></output></div>
-        <input type="range" id="pump" min="100" max="300" step="1">
+        <input type="range" id="pump" min="50" max="300" step="1">
         <p class="hint" id="pump-hint"></p>
       </div>
     </section>
@@ -439,13 +439,13 @@ footer p { margin: 0 0 6px; }
       <details class="calc">
         <summary>Come calcolo il rimborso del tetto</summary>
         <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza con il prezzo vero del gas.</p>
-        <p>Rimborso = (prezzo del gas − 60) × gas bruciato. Una centrale con rendimento del 56% brucia 1 ÷ 0,56 ≈ 1,8 MWh di gas per ogni MWh di elettricità, quindi per ogni MWh prodotto il rimborso vale (prezzo del gas − 60) ÷ rendimento. Come nelle regole proposte da ARERA, spetta su tutto il gas bruciato, anche quando il prezzo lo fa un altro impianto, e si paga in bolletta. Chi offre sopra il prezzo massimo lo perde.</p>
+        <p>Rimborso = (prezzo del gas − 60) × gas bruciato. Una centrale con rendimento del 56% brucia 1 ÷ 0,56 ≈ 1,8 MWh di gas per ogni MWh di elettricità, quindi per ogni MWh prodotto il rimborso vale (prezzo del gas − 60) ÷ rendimento. Come nelle regole proposte da ARERA, spetta su tutto il gas bruciato, anche quando il prezzo lo fa un altro impianto, e si paga in bolletta. Chi offre sopra il prezzo massimo lo perde: come nelle regole proposte, il prezzo massimo è calcolato con il gas al tetto e un rendimento standard del 56%, cioè 139,6 €/MWh.</p>
         <p class="live" id="reimb-live"></p>
       </details>
       <details class="calc">
         <summary>Come calcolo il guadagno dell’operatore integrato</summary>
         <p>Guadagno = margine delle sue centrali a gas + margine dei suoi pompaggi, nell’ora.</p>
-        <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − 100 €/MWh) × energia prodotta, ipotizzando che l’acqua sia stata pompata spendendo l’equivalente di 100 €/MWh. Questo margine non tiene conto che l’acqua usata ora non sarà più disponibile in un’altra ora di punta: se i pompaggi vendono sotto il valore dell’acqua, il guadagno è solo apparente. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
+        <p>Centrali a gas: (prezzo dell’ora − costo reale + rimborso, se il tetto è attivo) × energia prodotta, con costo reale = prezzo del gas ÷ 0,58 + 32,5 €/MWh di CO<sub>2</sub> e altri costi. Pompaggi: (prezzo dell’ora − costo di pompaggio) × energia prodotta. Il costo di pompaggio è la spesa per l’energia usata a pompare l’acqua, per ogni MWh poi prodotto: è fissato al 57% del costo della centrale a gas meno efficiente, cioè 100 €/MWh con il gas a 80 senza tetto, così segue il prezzo del gas e resta sempre sotto il valore dell’acqua. Questo margine non tiene conto che l’acqua usata ora non sarà più disponibile in un’altra ora di punta: se i pompaggi vendono sotto il valore dell’acqua, il guadagno è solo apparente. È un margine sui costi variabili, non un utile netto: restano fuori costi fissi, investimenti e manutenzione.</p>
         <p class="live" id="grp-live"></p>
       </details>
 
@@ -479,18 +479,19 @@ footer p { margin: 0 0 6px; }
     <div class="hbar key"><span>Idroelettrico a modulazione</span><div class="track"><div class="fill" style="width: 97.3%; background: #E8749F"></div></div><span class="val">175,2</span></div>
     <div class="hbar key"><span>Idroelettrico a pompaggio</span><div class="track"><div class="fill" style="width: 98.4%; background: #1E8E3E"></div></div><span class="val">177,1</span></div>
     <p class="sub" style="margin-top: 12px">Nel simulatore, sera di punta: il gas fissa il prezzo a 175 €/MWh senza tetto e a 140 con il tetto; con la zampata lo fissano i pompaggi a 175.</p>
-    <p class="src">Valori in €/MWh. Nella figura le FER corrispondono a impianti eolici e fotovoltaici, mentre la voce «altro» comprende batterie e impianti termoelettrici non alimentati a gas. Fonte: ARERA, memoria 360/2026/I/COM alla Camera dei Deputati, 13 ottobre 2026, figura 2.5. Grafico ridisegnato.</p>
+    <p class="src">Valori in €/MWh. Le categorie sono le stesse delle figure 2.4a e 2.4b, per le quali la memoria precisa che le FER corrispondono a impianti eolici e fotovoltaici e che la voce «altro» comprende batterie e impianti termoelettrici non alimentati a gas. Fonte: ARERA, memoria 360/2026/I/COM alla Camera dei Deputati, 13 ottobre 2026, figura 2.5. Grafico ridisegnato.</p>
   </section>
 
   <footer>
-    <p>Modello didattico con valori inventati: una sola zona, un’ora, numeri tondi. Tutti offrono ai propri costi tranne l’operatore integrato, che è immaginario e non rappresenta soggetti reali.</p>
-    <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza su tutto il gas bruciato, come nelle regole proposte da ARERA nel documento di consultazione 222/2026. CO<sub>2</sub> e altri costi variabili: 32,5 €/MWh. Rendimento delle centrali a gas: dal 56% al 60%. Energia usata dai pompaggi: 100 €/MWh.</p>
+    <p>Modello didattico con valori inventati: una sola zona senza vincoli di rete, un’ora, domanda rigida, numeri tondi. Tutti offrono ai propri costi tranne l’operatore integrato, che è immaginario e non rappresenta soggetti reali.</p>
+    <p>Con il tetto attivo le centrali a gas offrono come se il gas costasse 60 €/MWh e ricevono un rimborso per la differenza su tutto il gas bruciato, come nelle regole proposte da ARERA nel documento di consultazione 222/2026; il prezzo massimo delle offerte è calcolato con un rendimento standard del 56%. Il tetto è fisso a 60 €/MWh, mentre nelle regole proposte il suo valore è aggiornato ogni mese da Terna.</p>
+    <p>CO<sub>2</sub> e altri costi variabili: 32,5 €/MWh. Rendimento delle centrali a gas: dal 56% al 60%. Import a 130 €/MWh, batterie e impianti di punta a 230, riserva a olio a 300, qualunque sia il prezzo del gas. Valore dell’acqua concorrenziale: costo della centrale a gas meno efficiente meno 5 €/MWh. Costo dell’energia usata per pompare: 57% dello stesso costo, cioè 100 €/MWh con il gas a 80 senza tetto.</p>
   </footer>
 </div>
 
 <script>
 (function () {
-  var CAP = 60, OTHER = 32.5, PUMP_COST = 100, YMAX = 350;
+  var CAP = 60, OTHER = 32.5, PUMP_SHARE = 0.57, YMAX = 350;
   var HOURS = { sera: { demand: 36, res: 2 }, sole: { demand: 34, res: 16 } };
   var WHO = {
     res: 'lo fissano solare ed eolico',
@@ -517,6 +518,8 @@ footer p { margin: 0 0 6px; }
   function bidGas(s) { return topeActive(s) ? CAP : s.gas; }
   function gasCost(g, eta) { return g / eta + OTHER; }
   function correctWater(s) { return Math.round(gasCost(bidGas(s), 0.56) - 5); }
+  function pumpCost(s) { return Math.round(PUMP_SHARE * gasCost(bidGas(s), 0.56)); }
+  function maxPrice() { return gasCost(CAP, 0.56); }
   function preLevel(s) { return Math.round(gasCost(s.gas, 0.56)); }
   function pumpBid(s) {
     if (s.pumpMode === 'correct') return correctWater(s);
@@ -561,7 +564,7 @@ footer p { margin: 0 0 6px; }
     });
     var short = !marg;
     if (!marg) marg = list[list.length - 1];
-    var price = marg.offer, active = topeActive(s), compliantA = !(active && markupOf(s) > 0.5);
+    var price = marg.offer, active = topeActive(s), compliantA = !(active && gasOfferOf(s) > maxPrice() + 1e-6);
     var reimb = 0, grpGas = 0, grpPump = 0, qA = 0, reimbA = 0, qP = 0, costA = gasCost(s.gas, 0.58);
     list.forEach(function (u) {
       if (u.eta) {
@@ -570,12 +573,12 @@ footer p { margin: 0 0 6px; }
         reimb += u.q * 1000 * paid;
         if (u.id === 'gA') { qA = u.q; reimbA = paid; grpGas = u.q * 1000 * (price - gasCost(s.gas, u.eta) + paid); }
       }
-      if (u.id === 'pA') { qP = u.q; grpPump = u.q * 1000 * (price - PUMP_COST); }
+      if (u.id === 'pA') { qP = u.q; grpPump = u.q * 1000 * (price - pumpCost(s)); }
     });
     var energy = D * 1000 * price;
     return { list: list, marg: marg, price: price, D: D, short: short, energy: energy, reimb: reimb,
       consumers: energy + reimb, group: grpGas + grpPump, active: active, compliantA: compliantA, totalCap: cum,
-      grpGas: grpGas, grpPump: grpPump, qA: qA, reimbA: reimbA, qP: qP, costA: costA };
+      grpGas: grpGas, grpPump: grpPump, qA: qA, reimbA: reimbA, qP: qP, costA: costA, pc: pumpCost(s) };
   }
 
   function round2(v) { return Math.round(v / 1e4) * 1e4; }
@@ -591,7 +594,7 @@ footer p { margin: 0 0 6px; }
     } else {
       parts.push('centrali a gas non chiamate');
     }
-    if (r.qP > 0) parts.push('pompaggi ' + fmt0(r.qP * 1000) + ' MWh × (' + fmt1(r.price) + ' − 100) = ' + fmtK(r.grpPump));
+    if (r.qP > 0) parts.push('pompaggi ' + fmt0(r.qP * 1000) + ' MWh × (' + fmt1(r.price) + ' − ' + r.pc + ') = ' + fmtK(r.grpPump));
     else parts.push('pompaggi non chiamati');
     return 'In questo scenario: ' + parts.join('; ') + '. Totale ' + fmtK(Math.round(r.grpGas / 1000) * 1000 + Math.round(r.grpPump / 1000) * 1000) + '.';
   }
@@ -702,6 +705,7 @@ footer p { margin: 0 0 6px; }
     var ref = solve(copy(state, { withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
     var noTope = solve(copy(state, { tope: false, withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
     var withTope = solve(copy(state, { tope: true, withheld: 0, gasMode: 'cost', pumpMode: 'correct' }));
+    var noTopeSame = solve(copy(state, { tope: false }));
 
     $('#price').textContent = fmt0(r.price);
     $('#setter').innerHTML = '<span class="dot" style="background:' + COLORS[r.marg.kind] + '"></span>' + WHO[r.marg.id];
@@ -731,11 +735,12 @@ footer p { margin: 0 0 6px; }
     $('#markup-out').textContent = fmt0(ga) + ' €/MWh';
     var rise = Math.round(ga - gc);
     $('#markup-hint').textContent = 'Costo, cioè offerta corretta: ' + fmt0(gc) + ' €/MWh' + (r.active ? ', con il gas al tetto' : '') + '. ' +
-      (rise > 0 ? 'Rialzo sul costo: +' + rise + ' €/MWh.' : rise < 0 ? 'Offerta sotto il costo di ' + Math.abs(rise) + ' €/MWh.' : 'Nessun rialzo.');
+      (rise > 0 ? 'Rialzo sul costo: +' + rise + ' €/MWh.' : rise < 0 ? 'Offerta sotto il costo di ' + Math.abs(rise) + ' €/MWh.' : 'Nessun rialzo.') +
+      (r.active ? ' Prezzo massimo del tetto: ' + fmt1(maxPrice()) + ' €/MWh.' : '');
     var pb = pumpBid(state), wv = correctWater(state);
     $('#pump').value = pb;
     $('#pump-out').textContent = pb + ' €/MWh';
-    $('#pump-hint').textContent = 'Valore dell’acqua in un mercato concorrenziale: ' + wv + ' €/MWh, quanto renderebbe usarla in un’altra ora di punta.';
+    $('#pump-hint').textContent = 'Valore dell’acqua in un mercato concorrenziale: ' + wv + ' €/MWh, quanto renderebbe usarla in un’altra ora di punta. Costo di pompaggio: ' + pumpCost(state) + ' €/MWh.';
 
     drawChart(r);
 
@@ -770,10 +775,12 @@ footer p { margin: 0 0 6px; }
     } else if (!r.active) {
       items.push(['info', 'Con il gas a ' + state.gas + ' €/MWh il tetto non è attivo: valgono le regole ordinarie.']);
       if (mk > 0.5) items.push(['warn', 'L’operatore integrato offre il gas sopra il costo: il prezzo può salire senza che scattino controlli automatici.']);
+    } else if (!r.compliantA) {
+      items.push(['warn', 'Le offerte dell’operatore integrato superano il prezzo massimo del tetto (' + fmt1(maxPrice()) + ' €/MWh): ' + (r.qA > 0 ? 'perde il rimborso sul gas e rischia sanzioni.' : 'sarebbero segnalate, anche se in quest’ora le sue centrali a gas non vengono chiamate.')]);
     } else if (mk > 0.5) {
-      items.push(['warn', 'Le offerte dell’operatore integrato superano il prezzo massimo: perde il rimborso sul gas e rischia sanzioni.']);
+      items.push(['info', 'L’operatore integrato offre il gas ' + fmt0(mk) + ' €/MWh sopra il suo costo, ma sotto il prezzo massimo del tetto (' + fmt1(maxPrice()) + ' €/MWh): per il controllo è in regola. Il prezzo massimo è calcolato con un rendimento standard del 56%, quindi le centrali più efficienti possono offrire un po’ sopra il proprio costo.']);
     } else {
-      items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo: per il controllo del tetto è tutto in regola.']);
+      items.push(['ok', 'Offerte delle centrali a gas sotto il prezzo massimo del tetto (' + fmt1(maxPrice()) + ' €/MWh): per il controllo è tutto in regola.']);
     }
     if (mk < -0.5) items.push(['info', 'L’operatore integrato offre il gas sotto il costo: rischia di produrre in perdita se è la sua offerta a fissare il prezzo.']);
     var gcA = gasCostA(state), gasOutCost = (6 - state.withheld) > 0 && r.qA === 0 && gcA > r.price, pumpOutWater = r.qP === 0 && wv >= r.price;
@@ -781,15 +788,16 @@ footer p { margin: 0 0 6px; }
     else if (gasOutCost) items.push(['info', 'Le centrali a gas dell’operatore integrato restano fuori: per farsi chiamare dovrebbero offrire sotto il loro costo (' + fmt0(gcA) + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ') e produrrebbero in perdita.']);
     else if (pumpOutWater) items.push(['info', 'I pompaggi dell’operatore integrato restano fuori: conviene tenere l’acqua per un’altra ora di punta, dove vale di più (' + wv + ' €/MWh contro un prezzo di ' + fmt0(r.price) + ').']);
     if (state.withheld > 0) {
-      items.push(['warn', fmtGW(state.withheld) + ' di centrali a gas dell’operatore integrato risultano ferme. Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme.']);
+      items.push([r.active ? 'warn' : 'info', fmtGW(state.withheld) + ' di centrali a gas dell’operatore integrato risultano ferme.' + (r.active ? ' Il controllo previsto dal tetto non se ne accorge, perché verifica a che prezzo offrono le centrali a gas e non quante ne restano ferme.' : '')]);
     }
     if (r.short) items.push(['warn', 'La domanda supera la capacità disponibile: nella realtà il prezzo salirebbe fino al massimo ammesso dal mercato.']);
     if (r.qP > 0 && r.price < wv - 0.5) items.push(['warn', 'I pompaggi dell’operatore integrato vendono a ' + fmt0(r.price) + ' €/MWh, sotto il valore dell’acqua di ' + wv + ' €/MWh: il guadagno mostrato è solo apparente, perché quell’acqua renderebbe di più in un’altra ora di punta.']);
     if (pb > wv + 10) {
       items.push(['warn', 'I pompaggi dell’operatore integrato offrono ' + pb + ' €/MWh contro un valore dell’acqua concorrenziale di ' + wv + ' €/MWh: è la stima più difficile da controllare.']);
     }
-    if (r.active && !gasSets && (state.withheld > 0 || pb > wv + 10)) {
-      items.push(['warn', 'Il prezzo non lo fa il gas, ma il rimborso si paga comunque su tutto il gas bruciato: ' + fmtM(r.reimb) + ' in quest’ora.']);
+    if (r.active && !gasSets && r.reimb > 0) {
+      var worse = consShown(r) > consShown(noTopeSame) + 5000;
+      items.push(['warn', 'Il prezzo lo fissa un impianto non a gas, che il tetto non copre; il rimborso però si paga comunque su tutto il gas bruciato: ' + fmtM(r.reimb) + ' in quest’ora.' + (worse ? ' Per questo, in quest’ora, i consumatori spendono più che senza tetto.' : '')]);
     }
     $('#checks').innerHTML = items.map(function (it) {
       var icon = it[0] === 'ok' ? ICON_OK : it[0] === 'warn' ? ICON_WARN : ICON_INFO;
